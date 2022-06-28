@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\DBReducer.dir/objects.a
+C:\mingw-w64\mingw64\bin\ar.exe qc CMakeFiles\DBReducer.dir/objects.a @CMakeFiles\DBReducer.dir\objects1.rsp
+C:\mingw-w64\mingw64\bin\g++.exe  -O3 -Wall -Wl,--whole-archive CMakeFiles\DBReducer.dir/objects.a -Wl,--no-whole-archive -o DBReducer.exe -Wl,--out-implib,libDBReducer.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\DBReducer.dir\linklibs.rsp
