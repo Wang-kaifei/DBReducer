@@ -1,6 +1,6 @@
 CMakeFiles/DBReducer.dir/Param.cpp.obj: \
- C:\Users\pFind\Desktop\two-step_code\DBReducer\Param.cpp \
- C:\Users\pFind\Desktop\two-step_code\DBReducer\Param.hpp \
+ C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Param.cpp \
+ C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Param.hpp \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/string \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/os_defines.h \
@@ -133,7 +133,7 @@ CMakeFiles/DBReducer.dir/Param.cpp.obj: \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/ostream.tcc \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/istream \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/istream.tcc \
- C:/Users/pFind/Desktop/two-step_code/utils/IOUtil.h \
+ C:/Users/pFind/Desktop/DBReducer/DBReducer_code/utils/IOUtil.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/map \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_tree.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/ext/aligned_buffer.h \
@@ -150,7 +150,7 @@ CMakeFiles/DBReducer.dir/Param.cpp.obj: \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/basic_file.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/c++io.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/fstream.tcc \
- C:/Users/pFind/Desktop/two-step_code/utils/StringUtil.h \
+ C:/Users/pFind/Desktop/DBReducer/DBReducer_code/utils/StringUtil.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/algorithm \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_algo.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/algorithmfwd.h \

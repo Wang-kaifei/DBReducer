@@ -1,6 +1,6 @@
 CMakeFiles/DBReducer.dir/Rebuild.cpp.obj: \
- C:\Users\pFind\Desktop\two-step_code\DBReducer\Rebuild.cpp \
- C:\Users\pFind\Desktop\two-step_code\DBReducer\Param.hpp \
+ C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Rebuild.cpp \
+ C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Param.hpp \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/string \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/os_defines.h \
@@ -155,7 +155,7 @@ CMakeFiles/DBReducer.dir/Rebuild.cpp.obj: \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/uses_allocator.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/invoke.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/unordered_map.h \
- C:/Users/pFind/Desktop/two-step_code/utils/IOUtil.h \
+ C:/Users/pFind/Desktop/DBReducer/DBReducer_code/utils/IOUtil.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/map \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_map.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_multimap.h \
@@ -164,4 +164,4 @@ CMakeFiles/DBReducer.dir/Rebuild.cpp.obj: \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/basic_file.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/c++io.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/fstream.tcc \
- C:/Users/pFind/Desktop/two-step_code/utils/StringUtil.h
+ C:/Users/pFind/Desktop/DBReducer/DBReducer_code/utils/StringUtil.h

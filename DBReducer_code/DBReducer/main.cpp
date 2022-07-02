@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-12-20 22:30:44
  * @LastEditors: sueRimn
- * @LastEditTime: 2022-06-28 09:54:56
+ * @LastEditTime: 2022-07-01 15:05:48
  */
 #include <iostream>
 #include <windows.h>
@@ -37,7 +37,15 @@ int main(int argc, char **argv) {
 		cfgpath = argv[1];
 	}
 	Params param;
-	param.LoadParam(cfgpath); // 从pAnno.cfg文件读取参数
+	param.LoadParam(cfgpath); // 从DBReducer.cfg文件读取参数
+	param.RefinedPath = param.SearchRes + "\\DBReducer.fasta"; // 直接写死输出文件的路径
+	if (0 != access(param.SearchRes.c_str(), 0)) {
+		if (mkdir(param.SearchRes.c_str()) == -1) {
+			cout << "Path: " << param.SearchRes << endl;
+			printf("Build Folder failed!\n");
+			return 0;
+		}
+    }
 	PFindParams pFind_params(param); // 加载pFind参数
 	std::set<std::string> mods; // 总体要考虑的修饰
 	ReadMod(param, &mods);

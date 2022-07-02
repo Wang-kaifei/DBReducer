@@ -53,10 +53,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\pFind\Desktop\two-step_code\DBReducer
+CMAKE_SOURCE_DIR = C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\pFind\Desktop\two-step_code\DBReducer\build
+CMAKE_BINARY_DIR = C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -80,14 +80,14 @@ clean: CMakeFiles/DBReducer.dir/clean
 CMakeFiles/DBReducer.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\DBReducer.dir\build.make CMakeFiles/DBReducer.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\DBReducer.dir\build.make CMakeFiles/DBReducer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\pFind\Desktop\two-step_code\DBReducer\build\CMakeFiles --progress-num=1,2,3,4 "Built target DBReducer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build\CMakeFiles --progress-num=1,2,3,4 "Built target DBReducer"
 .PHONY : CMakeFiles/DBReducer.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/DBReducer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\pFind\Desktop\two-step_code\DBReducer\build\CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build\CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/DBReducer.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\pFind\Desktop\two-step_code\DBReducer\build\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build\CMakeFiles 0
 .PHONY : CMakeFiles/DBReducer.dir/rule
 
 # Convenience name for target.

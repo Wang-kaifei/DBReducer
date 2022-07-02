@@ -1,3 +1,3 @@
-C:/Users/pFind/Desktop/two-step_code/DBReducer/build/CMakeFiles/rebuild_cache.dir
-C:/Users/pFind/Desktop/two-step_code/DBReducer/build/CMakeFiles/DBReducer.dir
-C:/Users/pFind/Desktop/two-step_code/DBReducer/build/CMakeFiles/edit_cache.dir
+C:/Users/pFind/Desktop/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/rebuild_cache.dir
+C:/Users/pFind/Desktop/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/DBReducer.dir
+C:/Users/pFind/Desktop/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/edit_cache.dir

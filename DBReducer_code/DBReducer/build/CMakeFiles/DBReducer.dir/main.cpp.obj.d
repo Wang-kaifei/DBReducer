@@ -1,5 +1,5 @@
 CMakeFiles/DBReducer.dir/main.cpp.obj: \
- C:\Users\pFind\Desktop\two-step_code\DBReducer\main.cpp \
+ C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\main.cpp \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/iostream \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/os_defines.h \
@@ -353,7 +353,7 @@ CMakeFiles/DBReducer.dir/main.cpp.obj: \
  C:/mingw-w64/mingw64/x86_64-w64-mingw32/include/time.h \
  C:/mingw-w64/mingw64/x86_64-w64-mingw32/include/pthread_time.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/parse_numbers.h \
- C:/Users/pFind/Desktop/two-step_code/utils/IOUtil.h \
+ C:/Users/pFind/Desktop/DBReducer/DBReducer_code/utils/IOUtil.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/map \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_tree.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/ext/aligned_buffer.h \
@@ -370,15 +370,15 @@ CMakeFiles/DBReducer.dir/main.cpp.obj: \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/basic_file.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32/bits/c++io.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/fstream.tcc \
- C:/Users/pFind/Desktop/two-step_code/utils/StringUtil.h \
+ C:/Users/pFind/Desktop/DBReducer/DBReducer_code/utils/StringUtil.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/algorithm \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_algo.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/algorithmfwd.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_heap.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_tempbuf.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/uniform_int_dist.h \
- C:\Users\pFind\Desktop\two-step_code\DBReducer\Param.hpp \
- C:\Users\pFind\Desktop\two-step_code\DBReducer\Rebuild.hpp \
+ C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Param.hpp \
+ C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Rebuild.hpp \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/set \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_set.h \
  C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_multiset.h \

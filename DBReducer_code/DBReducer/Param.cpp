@@ -37,8 +37,6 @@ void Params::LoadParam(const std::string cfgpath) {
         else if (key == "SearchRes") {
             this->SearchRes = Strip(&value, "\\/");
         }
-        else if (key == "RefinedPath")
-			this->RefinedPath = value;
         else if (key == "threshold")
 			this->threshold = std::stod(value);
         else if (key == "multip")

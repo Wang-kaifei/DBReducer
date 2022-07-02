@@ -52,10 +52,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\pFind\Desktop\two-step_code\DBReducer
+CMAKE_SOURCE_DIR = C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\pFind\Desktop\two-step_code\DBReducer\build
+CMAKE_BINARY_DIR = C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/DBReducer.dir/depend.make
@@ -71,44 +71,44 @@ include CMakeFiles/DBReducer.dir/flags.make
 CMakeFiles/DBReducer.dir/main.cpp.obj: CMakeFiles/DBReducer.dir/flags.make
 CMakeFiles/DBReducer.dir/main.cpp.obj: ../main.cpp
 CMakeFiles/DBReducer.dir/main.cpp.obj: CMakeFiles/DBReducer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\pFind\Desktop\two-step_code\DBReducer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/DBReducer.dir/main.cpp.obj"
-	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/DBReducer.dir/main.cpp.obj -MF CMakeFiles\DBReducer.dir\main.cpp.obj.d -o CMakeFiles\DBReducer.dir\main.cpp.obj -c C:\Users\pFind\Desktop\two-step_code\DBReducer\main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/DBReducer.dir/main.cpp.obj"
+	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/DBReducer.dir/main.cpp.obj -MF CMakeFiles\DBReducer.dir\main.cpp.obj.d -o CMakeFiles\DBReducer.dir\main.cpp.obj -c C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\main.cpp
 
 CMakeFiles/DBReducer.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DBReducer.dir/main.cpp.i"
-	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\pFind\Desktop\two-step_code\DBReducer\main.cpp > CMakeFiles\DBReducer.dir\main.cpp.i
+	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\main.cpp > CMakeFiles\DBReducer.dir\main.cpp.i
 
 CMakeFiles/DBReducer.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DBReducer.dir/main.cpp.s"
-	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\pFind\Desktop\two-step_code\DBReducer\main.cpp -o CMakeFiles\DBReducer.dir\main.cpp.s
+	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\main.cpp -o CMakeFiles\DBReducer.dir\main.cpp.s
 
 CMakeFiles/DBReducer.dir/Rebuild.cpp.obj: CMakeFiles/DBReducer.dir/flags.make
 CMakeFiles/DBReducer.dir/Rebuild.cpp.obj: ../Rebuild.cpp
 CMakeFiles/DBReducer.dir/Rebuild.cpp.obj: CMakeFiles/DBReducer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\pFind\Desktop\two-step_code\DBReducer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/DBReducer.dir/Rebuild.cpp.obj"
-	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/DBReducer.dir/Rebuild.cpp.obj -MF CMakeFiles\DBReducer.dir\Rebuild.cpp.obj.d -o CMakeFiles\DBReducer.dir\Rebuild.cpp.obj -c C:\Users\pFind\Desktop\two-step_code\DBReducer\Rebuild.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/DBReducer.dir/Rebuild.cpp.obj"
+	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/DBReducer.dir/Rebuild.cpp.obj -MF CMakeFiles\DBReducer.dir\Rebuild.cpp.obj.d -o CMakeFiles\DBReducer.dir\Rebuild.cpp.obj -c C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Rebuild.cpp
 
 CMakeFiles/DBReducer.dir/Rebuild.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DBReducer.dir/Rebuild.cpp.i"
-	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\pFind\Desktop\two-step_code\DBReducer\Rebuild.cpp > CMakeFiles\DBReducer.dir\Rebuild.cpp.i
+	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Rebuild.cpp > CMakeFiles\DBReducer.dir\Rebuild.cpp.i
 
 CMakeFiles/DBReducer.dir/Rebuild.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DBReducer.dir/Rebuild.cpp.s"
-	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\pFind\Desktop\two-step_code\DBReducer\Rebuild.cpp -o CMakeFiles\DBReducer.dir\Rebuild.cpp.s
+	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Rebuild.cpp -o CMakeFiles\DBReducer.dir\Rebuild.cpp.s
 
 CMakeFiles/DBReducer.dir/Param.cpp.obj: CMakeFiles/DBReducer.dir/flags.make
 CMakeFiles/DBReducer.dir/Param.cpp.obj: ../Param.cpp
 CMakeFiles/DBReducer.dir/Param.cpp.obj: CMakeFiles/DBReducer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\pFind\Desktop\two-step_code\DBReducer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/DBReducer.dir/Param.cpp.obj"
-	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/DBReducer.dir/Param.cpp.obj -MF CMakeFiles\DBReducer.dir\Param.cpp.obj.d -o CMakeFiles\DBReducer.dir\Param.cpp.obj -c C:\Users\pFind\Desktop\two-step_code\DBReducer\Param.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/DBReducer.dir/Param.cpp.obj"
+	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/DBReducer.dir/Param.cpp.obj -MF CMakeFiles\DBReducer.dir\Param.cpp.obj.d -o CMakeFiles\DBReducer.dir\Param.cpp.obj -c C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Param.cpp
 
 CMakeFiles/DBReducer.dir/Param.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DBReducer.dir/Param.cpp.i"
-	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\pFind\Desktop\two-step_code\DBReducer\Param.cpp > CMakeFiles\DBReducer.dir\Param.cpp.i
+	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Param.cpp > CMakeFiles\DBReducer.dir\Param.cpp.i
 
 CMakeFiles/DBReducer.dir/Param.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DBReducer.dir/Param.cpp.s"
-	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\pFind\Desktop\two-step_code\DBReducer\Param.cpp -o CMakeFiles\DBReducer.dir\Param.cpp.s
+	C:\mingw-w64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\Param.cpp -o CMakeFiles\DBReducer.dir\Param.cpp.s
 
 # Object files for target DBReducer
 DBReducer_OBJECTS = \
@@ -123,11 +123,11 @@ DBReducer.exe: CMakeFiles/DBReducer.dir/main.cpp.obj
 DBReducer.exe: CMakeFiles/DBReducer.dir/Rebuild.cpp.obj
 DBReducer.exe: CMakeFiles/DBReducer.dir/Param.cpp.obj
 DBReducer.exe: CMakeFiles/DBReducer.dir/build.make
-DBReducer.exe: C:/Users/pFind/Desktop/two-step_code/utils/build/lib/libUtils.dll
+DBReducer.exe: C:/Users/pFind/Desktop/DBReducer/DBReducer_code/utils/build/lib/libUtils.dll
 DBReducer.exe: CMakeFiles/DBReducer.dir/linklibs.rsp
 DBReducer.exe: CMakeFiles/DBReducer.dir/objects1.rsp
 DBReducer.exe: CMakeFiles/DBReducer.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\pFind\Desktop\two-step_code\DBReducer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable DBReducer.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable DBReducer.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\DBReducer.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -139,6 +139,6 @@ CMakeFiles/DBReducer.dir/clean:
 .PHONY : CMakeFiles/DBReducer.dir/clean
 
 CMakeFiles/DBReducer.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\pFind\Desktop\two-step_code\DBReducer C:\Users\pFind\Desktop\two-step_code\DBReducer C:\Users\pFind\Desktop\two-step_code\DBReducer\build C:\Users\pFind\Desktop\two-step_code\DBReducer\build C:\Users\pFind\Desktop\two-step_code\DBReducer\build\CMakeFiles\DBReducer.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build C:\Users\pFind\Desktop\DBReducer\DBReducer_code\DBReducer\build\CMakeFiles\DBReducer.dir\DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/DBReducer.dir/depend
 
