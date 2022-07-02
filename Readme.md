@@ -1,3 +1,4 @@
+![image](https://github.com/Wang-kaifei/DBReducer/blob/master/IMG/workflow.png)
 1. Download the compressed package. Open https://github.com/Wang-kaifei/DBReducer/blob/master/DBReducer.rar, and click the download button to download [DBReducer.rar](https://github.com/Wang-kaifei/DBReducer/blob/master /DBReducer.rar) compressed package.
 2. Unzip DBReducer.rar (WinRAR is recommended).
 3. Open the DBReducer.cfg file in the `\DBReducer\DBReducer\` directory. Then modify the parameters, such as *ProteinDatabase, RefinedPath, msmspath1, msmspath2*, etc.
