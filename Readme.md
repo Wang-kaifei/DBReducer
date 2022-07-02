@@ -1,4 +1,4 @@
-#DBReducer: A universal database reduction method based on the sequence tag strategy to facilitate
+# DBReducer: A universal database reduction method based on the sequence tag strategy to facilitate
 large-scale database search in proteomics
 
 ![image](https://github.com/Wang-kaifei/DBReducer/blob/master/IMG/workflow.png)
