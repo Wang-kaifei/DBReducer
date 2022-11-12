@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/pFind/Desktop/DBReducer/DBReducer_code/DBReducer/Param.cpp" "CMakeFiles/DBReducer.dir/Param.cpp.obj" "gcc" "CMakeFiles/DBReducer.dir/Param.cpp.obj.d"
-  "C:/Users/pFind/Desktop/DBReducer/DBReducer_code/DBReducer/Rebuild.cpp" "CMakeFiles/DBReducer.dir/Rebuild.cpp.obj" "gcc" "CMakeFiles/DBReducer.dir/Rebuild.cpp.obj.d"
-  "C:/Users/pFind/Desktop/DBReducer/DBReducer_code/DBReducer/main.cpp" "CMakeFiles/DBReducer.dir/main.cpp.obj" "gcc" "CMakeFiles/DBReducer.dir/main.cpp.obj.d"
+  "D:/DBReducer/DBReducer_code/DBReducer/Param.cpp" "CMakeFiles/DBReducer.dir/Param.cpp.obj" "gcc" "CMakeFiles/DBReducer.dir/Param.cpp.obj.d"
+  "D:/DBReducer/DBReducer_code/DBReducer/Rebuild.cpp" "CMakeFiles/DBReducer.dir/Rebuild.cpp.obj" "gcc" "CMakeFiles/DBReducer.dir/Rebuild.cpp.obj.d"
+  "D:/DBReducer/DBReducer_code/DBReducer/main.cpp" "CMakeFiles/DBReducer.dir/main.cpp.obj" "gcc" "CMakeFiles/DBReducer.dir/main.cpp.obj.d"
   )
 
 # Targets to which this target links.

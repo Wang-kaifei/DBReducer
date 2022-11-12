@@ -41,6 +41,12 @@ void Params::LoadParam(const std::string cfgpath) {
 			this->threshold = std::stod(value);
         else if (key == "multip")
 			this->multip = std::stoi(value);
+        else if (key == "thread")
+			this->thread = std::stoi(value);
+        else if (key == "maxprolen")
+			this->maxprolen = std::stoll(value);
+        else if (key == "maxspec")
+			this->maxspec = std::stoll(value);
         else if (key == "activation_type")
 			this->activation_type = value;
         else if (key == "msmsnum")

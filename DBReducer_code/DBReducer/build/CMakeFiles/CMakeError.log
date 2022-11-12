@@ -1,0 +1,56 @@
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/msys64/mingw64/bin/make.exe -f Makefile cmTC_56ad4/fast && C:/msys64/mingw64/bin/make.exe  -f CMakeFiles/cmTC_56ad4.dir/build.make CMakeFiles/cmTC_56ad4.dir/build
+make[1]: Entering directory 'D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_56ad4.dir/CMakeCCompilerABI.c.obj
+C:/msys64/mingw64/bin/cc.exe   -v -o CMakeFiles/cmTC_56ad4.dir/CMakeCCompilerABI.c.obj -c "C:/Program Files/CMake/share/cmake-3.21/Modules/CMakeCCompilerABI.c"
+Using built-in specs.
+COLLECT_GCC=C:\msys64\mingw64\bin\cc.exe
+Target: x86_64-w64-mingw32
+Configured with: ../gcc-12.2.0/configure --prefix=/mingw64 --with-local-prefix=/mingw64/local --build=x86_64-w64-mingw32 --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --with-native-system-header-dir=/mingw64/include --libexecdir=/mingw64/lib --enable-bootstrap --enable-checking=release --with-arch=x86-64 --with-tune=generic --enable-languages=c,lto,c++,fortran,ada,objc,obj-c++,jit --enable-shared --enable-static --enable-libatomic --enable-threads=posix --enable-graphite --enable-fully-dynamic-string --enable-libstdcxx-filesystem-ts --enable-libstdcxx-time --disable-libstdcxx-pch --enable-lto --enable-libgomp --disable-multilib --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-libiconv --with-system-zlib --with-gmp=/mingw64 --with-mpfr=/mingw64 --with-mpc=/mingw64 --with-isl=/mingw64 --with-pkgversion='Rev1, Built by MSYS2 project' --with-bugurl=https://github.com/msys2/MINGW-packages/issues --with-gnu-as --with-gnu-ld --disable-libstdcxx-debug --with-boot-ldflags=-static-libstdc++ --with-stage1-ldflags=-static-libstdc++
+Thread model: posix
+Supported LTO compression algorithms: zlib zstd
+gcc version 12.2.0 (Rev1, Built by MSYS2 project) 
+COMPILER_PATH=C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/;C:/msys64/mingw64/bin/../lib/gcc/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/bin/
+LIBRARY_PATH=C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/;C:/msys64/mingw64/bin/../lib/gcc/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_56ad4.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_56ad4.dir/CMakeCCompilerABI.c.'
+cc.exe: warning: C:/Program: linker input file unused because linking not done
+cc.exe: error: C:/Program: linker input file not found: No such file or directory
+cc.exe: warning: Files/CMake/share/cmake-3.21/Modules/CMakeCCompilerABI.c\: linker input file unused because linking not done
+cc.exe: error: Files/CMake/share/cmake-3.21/Modules/CMakeCCompilerABI.c\: linker input file not found: No such file or directory
+make[1]: *** [CMakeFiles/cmTC_56ad4.dir/build.make:78: CMakeFiles/cmTC_56ad4.dir/CMakeCCompilerABI.c.obj] Error 1
+make[1]: Leaving directory 'D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_56ad4/fast] Error 2
+
+
+
+
+Detecting CXX compiler ABI info failed to compile with the following output:
+Change Dir: D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/msys64/mingw64/bin/make.exe -f Makefile cmTC_6001f/fast && C:/msys64/mingw64/bin/make.exe  -f CMakeFiles/cmTC_6001f.dir/build.make CMakeFiles/cmTC_6001f.dir/build
+make[1]: Entering directory 'D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_6001f.dir/CMakeCXXCompilerABI.cpp.obj
+C:/msys64/mingw64/bin/c++.exe   -v -o CMakeFiles/cmTC_6001f.dir/CMakeCXXCompilerABI.cpp.obj -c "C:/Program Files/CMake/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp"
+Using built-in specs.
+COLLECT_GCC=C:\msys64\mingw64\bin\c++.exe
+Target: x86_64-w64-mingw32
+Configured with: ../gcc-12.2.0/configure --prefix=/mingw64 --with-local-prefix=/mingw64/local --build=x86_64-w64-mingw32 --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --with-native-system-header-dir=/mingw64/include --libexecdir=/mingw64/lib --enable-bootstrap --enable-checking=release --with-arch=x86-64 --with-tune=generic --enable-languages=c,lto,c++,fortran,ada,objc,obj-c++,jit --enable-shared --enable-static --enable-libatomic --enable-threads=posix --enable-graphite --enable-fully-dynamic-string --enable-libstdcxx-filesystem-ts --enable-libstdcxx-time --disable-libstdcxx-pch --enable-lto --enable-libgomp --disable-multilib --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-libiconv --with-system-zlib --with-gmp=/mingw64 --with-mpfr=/mingw64 --with-mpc=/mingw64 --with-isl=/mingw64 --with-pkgversion='Rev1, Built by MSYS2 project' --with-bugurl=https://github.com/msys2/MINGW-packages/issues --with-gnu-as --with-gnu-ld --disable-libstdcxx-debug --with-boot-ldflags=-static-libstdc++ --with-stage1-ldflags=-static-libstdc++
+Thread model: posix
+Supported LTO compression algorithms: zlib zstd
+gcc version 12.2.0 (Rev1, Built by MSYS2 project) 
+COMPILER_PATH=C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/;C:/msys64/mingw64/bin/../lib/gcc/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/bin/
+LIBRARY_PATH=C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/;C:/msys64/mingw64/bin/../lib/gcc/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6001f.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6001f.dir/CMakeCXXCompilerABI.cpp.'
+c++.exe: warning: C:/Program: linker input file unused because linking not done
+c++.exe: error: C:/Program: linker input file not found: No such file or directory
+c++.exe: warning: Files/CMake/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp\: linker input file unused because linking not done
+c++.exe: error: Files/CMake/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp\: linker input file not found: No such file or directory
+make[1]: *** [CMakeFiles/cmTC_6001f.dir/build.make:78: CMakeFiles/cmTC_6001f.dir/CMakeCXXCompilerABI.cpp.obj] Error 1
+make[1]: Leaving directory 'D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_6001f/fast] Error 2
+
+
+
+

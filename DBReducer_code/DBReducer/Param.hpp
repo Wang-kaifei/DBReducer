@@ -17,9 +17,12 @@ public:
     std::string RefinedPath; // pFind输出结果路径
     double threshold = 0.01; // 谱图/肽段层次的FDR限制
     int multip; // 进程数
+    int thread; // 谱图线程数
+    long long maxspec; // 每轮处理的谱图数
+    long long maxprolen; // 一次读入的蛋白质总长度
     std::string activation_type; // 高低精度数据区分
     int msmsnum; // 数据集数量
-    int msmsfolder; // 文件夹数量
+    int msmsfolder = 0; // 文件夹数量
     std::vector<std::string> msmspaths; // 存储数据集的路径
     std::string msmstype; // 数据集文件类型
     void LoadParam(const std::string cfgpath);
@@ -32,6 +35,9 @@ public:
     virtual ~PFindParams(){};
     PFindParams(const Params &pAnno_param) {
         multip = pAnno_param.multip;
+        thread = pAnno_param.thread;
+        maxprolen = pAnno_param.maxprolen;
+        maxspec = pAnno_param.maxspec;
         activation_type = pAnno_param.activation_type;
         selectmod = pAnno_param.selectmod;
         fixmod = pAnno_param.fixmod;
@@ -49,7 +55,7 @@ public:
     PFindParams(){};
     // [param]
     int multip = 1; // 需指定
-    int thread = 2;
+    int thread = 2; // 需指定
     std::string activation_type = "HCD-FTMS"; // 需指定
     int mstol = 20;
     int mstolppm = 1;
@@ -58,8 +64,8 @@ public:
     int temppepnum = 100;
     int pepnum = 10;
     int selectpeak = 200;
-    int64_t maxprolen = 10000000000;
-    int maxspec = 10000;
+    long long maxprolen = 60000000; // 需指定
+    int maxspec = 10000; // 需指定
     int IeqL = 1;
     int npep = 2;
     int maxdelta = 500;
