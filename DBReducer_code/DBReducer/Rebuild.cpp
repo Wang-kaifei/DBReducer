@@ -3,8 +3,8 @@
  * @version: 
  * @Author: sueRimn
  * @Date: 2022-06-27 13:24:46
- * @LastEditors: sueRimn
- * @LastEditTime: 2022-06-27 23:16:49
+ * @LastEditors: Kaifei
+ * @LastEditTime: 2023-03-03 11:12:39
  */
 
 #include "Param.hpp"
@@ -41,14 +41,14 @@ void ReadProteinName(std::set<std::string> *protein_names, const std::string &pr
     }
 }
 
-void BuildDict(std::unordered_map<std::string, std::string> *name_seq, const std::string &fasta_path) {
+void BuildDict(std::unordered_map<std::string, std::string> *name_seq, const std::string &fasta_path, std::unordered_map<std::string, std::string> *name_full_name) {
     std::ifstream buffer = ReadFilebyStream(fasta_path);
     std::string linestr;
     std::string name = "", seq = "";
     while (!buffer.eof()) {
         getline(buffer, linestr);
         Strip(&linestr);
-        if (linestr[0] == '>') {
+        if (linestr[0] == '>') { // 如果是蛋白名
             if (seq != "")
                 name_seq->insert(std::make_pair(name, seq));
             int pos = linestr.size();
@@ -60,27 +60,30 @@ void BuildDict(std::unordered_map<std::string, std::string> *name_seq, const std
                 pos = pos2;
             name = linestr.substr(1, pos - 1);
             seq = "";
+            name_full_name->insert(std::make_pair(name, linestr)); // 存储mini name 2 full name的字典
         }
         else
             seq += linestr;
     }
 }
 
-void RebuildDtabaseMaxQuant(const std::set<std::string> &protein_names, const std::unordered_map<std::string, std::string> &name_seq, const std::string &out_path) {
+void RebuildDtabaseMaxQuant(const std::set<std::string> &protein_names, const std::unordered_map<std::string, std::string> &name_seq, const std::unordered_map<std::string, std::string> &name_full_name, const std::string &out_path) {
     FILE * refined_file = OpenFileWrite(out_path);
     setvbuf ( refined_file , NULL , _IOFBF , 1024000 );
     int32_t con_cnt = 0;
     for (auto protein_name = protein_names.begin(), end_ = protein_names.end(); protein_name != end_; protein_name++) {
         if (name_seq.find(*protein_name) == name_seq.end())
             std::cout << "The Protein " << *protein_name << " can not be found, please check the format!\n";
-        fwrite(">", 1, 1, refined_file);
+        if (name_full_name.find(*protein_name) == name_full_name.end())
+            std::cout << "The full name of protein " << *protein_name << " can not be found, please check the format!\n";
+        std::string fullname = name_full_name.at(*protein_name);
         if (protein_name->substr(0, 3) == "CON") {
-            fwrite("CON|", 4, 1, refined_file);
+            fwrite(">CON|", 5, 1, refined_file);
             fwrite(std::to_string(con_cnt).c_str(), std::to_string(con_cnt).length(), 1, refined_file);
             con_cnt++;
         }
         else
-            fwrite((*protein_name).c_str(), protein_name->length(), 1, refined_file);
+            fwrite(name_full_name.at(*protein_name).c_str(), name_full_name.at(*protein_name).length(), 1, refined_file);
         fwrite("\n", 1, 1, refined_file);
         fwrite((name_seq.at(*protein_name)).c_str(), (name_seq.at(*protein_name)).length(), 1, refined_file);
         fwrite("\n", 1, 1, refined_file);
@@ -88,14 +91,15 @@ void RebuildDtabaseMaxQuant(const std::set<std::string> &protein_names, const st
     fclose(refined_file);
 }
 
-void RebuildDtabase(const std::set<std::string> &protein_names, const std::unordered_map<std::string, std::string> &name_seq, const std::string &out_path) {
+void RebuildDtabase(const std::set<std::string> &protein_names, const std::unordered_map<std::string, std::string> &name_seq, const std::unordered_map<std::string, std::string> &name_full_name, const std::string &out_path) {
     FILE * refined_file = OpenFileWrite(out_path);
     setvbuf ( refined_file , NULL , _IOFBF , 1024000 );
     for (auto protein_name = protein_names.begin(), end_ = protein_names.end(); protein_name != end_; protein_name++) {
         if (name_seq.find(*protein_name) == name_seq.end())
             std::cout << "The Protein " << *protein_name << " can not be found, please check the format!\n";
-        fwrite(">", 1, 1, refined_file);
-        fwrite((*protein_name).c_str(), protein_name->length(), 1, refined_file);
+        if (name_full_name.find(*protein_name) == name_full_name.end())
+            std::cout << "The full name of protein " << *protein_name << " can not be found, please check the format!\n";
+        fwrite((name_full_name.at(*protein_name)).c_str(), (name_full_name.at(*protein_name)).length(), 1, refined_file);
         fwrite("\n", 1, 1, refined_file);
         fwrite((name_seq.at(*protein_name)).c_str(), (name_seq.at(*protein_name)).length(), 1, refined_file);
         fwrite("\n", 1, 1, refined_file);
@@ -114,10 +118,11 @@ void RenameCON(std::set<std::string> *protein_names) {
 void DBReducer(const std::string &protein_path, const std::string &fasta_path, const std::string &out_path, float threshold, bool maxquant_flag) {
     std::set<std::string> protein_names;
     std::unordered_map<std::string, std::string> name_seq;
-    BuildDict(&name_seq, fasta_path); // 将原始数据库存成dict形式
+    std::unordered_map<std::string, std::string> name_full_name;
+    BuildDict(&name_seq, fasta_path, &name_full_name); // 将原始数据库存成dict形式
     ReadProteinName(&protein_names, protein_path, threshold); // 读取被鉴定到的蛋白质
     if (maxquant_flag) // 如果下游是maxquant，则需要重命名CON
-        RebuildDtabaseMaxQuant(protein_names, name_seq, out_path);
+        RebuildDtabaseMaxQuant(protein_names, name_seq, name_full_name, out_path);
     else
-        RebuildDtabase(protein_names, name_seq, out_path); // 数据库重建
+        RebuildDtabase(protein_names, name_seq, name_full_name, out_path); // 数据库重建
 }
