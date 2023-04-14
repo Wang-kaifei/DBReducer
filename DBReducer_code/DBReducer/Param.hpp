@@ -25,7 +25,7 @@ public:
     int msmsfolder = 0; // 文件夹数量
     std::vector<std::string> msmspaths; // 存储数据集的路径
     std::string msmstype; // 数据集文件类型
-    void LoadParam(const std::string cfgpath);
+    void LoadParam(const std::string &cfgpath);
     void PrintParam();
 };
 
@@ -41,8 +41,8 @@ public:
         activation_type = pAnno_param.activation_type;
         selectmod = pAnno_param.selectmod;
         fixmod = pAnno_param.fixmod;
-        psm_fdr = 0.01;
-        pro_fdr = 0.01;
+        psm_fdr = pAnno_param.threshold;
+        pro_fdr = pAnno_param.threshold;
         open = 5; // 5是DBReducer对应的搜索模式
         modpath = pAnno_param.SearchRes + "\\modification.ini";
         fastapath = pAnno_param.ProteinDatabase;

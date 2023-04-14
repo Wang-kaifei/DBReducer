@@ -3,8 +3,8 @@
  * @version: 
  * @Author: sueRimn
  * @Date: 2021-12-20 22:30:44
- * @LastEditors: sueRimn
- * @LastEditTime: 2022-07-01 15:05:48
+ * @LastEditors: Kaifei
+ * @LastEditTime: 2023-04-14 10:38:18
  */
 #include <iostream>
 #include <windows.h>
@@ -39,6 +39,7 @@ int main(int argc, char **argv) {
 	Params param;
 	param.LoadParam(cfgpath); // 从DBReducer.cfg文件读取参数
 	param.RefinedPath = param.SearchRes + "\\DBReducer.fasta"; // 直接写死输出文件的路径
+	param.PrintParam();
 	if (0 != access(param.SearchRes.c_str(), 0)) {
 		if (mkdir(param.SearchRes.c_str()) == -1) {
 			cout << "Path: " << param.SearchRes << endl;

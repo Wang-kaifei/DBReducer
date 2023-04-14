@@ -10,7 +10,7 @@
  * 
  * @param cfgpath pAnno.cfg文件路径
  */
-void Params::LoadParam(const std::string cfgpath) {
+void Params::LoadParam(const std::string &cfgpath) {
     std::ifstream buffer = ReadFilebyStream(cfgpath);
     std::string linestr;
     while (!buffer.eof()) {
