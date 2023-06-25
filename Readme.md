@@ -1,7 +1,7 @@
 # DBReducer: A universal database reduction method based on the sequence tag strategy to facilitate large-scale database search in proteomics
 
 ![image](https://github.com/Wang-kaifei/DBReducer/blob/master/IMG/workflow.png)
-1. Download the compressed package. Open https://github.com/Wang-kaifei/DBReducer/blob/master/DBReducer.rar, and click the download button to download [DBReducer.rar](https://github.com/Wang-kaifei/DBReducer/blob/master /DBReducer.rar) compressed package.
+1. Download the compressed package. Open http://pfind.org/software/DBReducer/index.html#Downloads, and click the download button to download DBReducer.rar compressed package.
 2. Unzip DBReducer.rar (WinRAR is recommended).
 3. Open the DBReducer.cfg file in the `\DBReducer\DBReducer\` directory. Then modify the parameters, such as *ProteinDatabase, RefinedPath, msmspath1, msmspath2*, etc.
 4. Press the **win** and **R** at the same time, a window will pop up. Enter `cmd` in the pop-up window, press **Enter**, and then you will get a command prompt window.
