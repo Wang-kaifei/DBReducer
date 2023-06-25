@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = 
 
-CXX_FLAGS =  -O3 -Wall -std=gnu++14
+CXX_FLAGS =  -fopenmp  -O3 -Wall -fopenmp -std=gnu++20
 

@@ -242,6 +242,42 @@ DBReducer_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 DBReducer_SOURCE_DIR:STATIC=D:/DBReducer/DBReducer_code/DBReducer
 
+//CXX compiler flags for OpenMP parallelization
+OpenMP_CXX_FLAGS:STRING=-fopenmp
+
+//CXX compiler libraries for OpenMP parallelization
+OpenMP_CXX_LIB_NAMES:STRING=gomp;mingwthrd;mingw32;gcc_s;gcc;moldname;mingwex;pthread;mingwthrd;mingw32;gcc_s;gcc;moldname;mingwex
+
+//C compiler flags for OpenMP parallelization
+OpenMP_C_FLAGS:STRING=-fopenmp
+
+//C compiler libraries for OpenMP parallelization
+OpenMP_C_LIB_NAMES:STRING=gomp;mingwthrd;mingw32;gcc;moldname;mingwex;pthread;mingwthrd;mingw32;gcc;moldname;mingwex
+
+//Path to the gcc library for OpenMP
+OpenMP_gcc_LIBRARY:FILEPATH=C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/libgcc.a
+
+//Path to the gcc_s library for OpenMP
+OpenMP_gcc_s_LIBRARY:FILEPATH=C:/msys64/mingw64/lib/libgcc_s.a
+
+//Path to the gomp library for OpenMP
+OpenMP_gomp_LIBRARY:FILEPATH=C:/msys64/mingw64/lib/libgomp.dll.a
+
+//Path to the mingw32 library for OpenMP
+OpenMP_mingw32_LIBRARY:FILEPATH=C:/msys64/mingw64/lib/libmingw32.a
+
+//Path to the mingwex library for OpenMP
+OpenMP_mingwex_LIBRARY:FILEPATH=C:/msys64/mingw64/lib/libmingwex.a
+
+//Path to the mingwthrd library for OpenMP
+OpenMP_mingwthrd_LIBRARY:FILEPATH=C:/msys64/mingw64/lib/libmingwthrd.a
+
+//Path to the moldname library for OpenMP
+OpenMP_moldname_LIBRARY:FILEPATH=C:/msys64/mingw64/lib/libmoldname.a
+
+//Path to the pthread library for OpenMP
+OpenMP_pthread_LIBRARY:FILEPATH=C:/msys64/mingw64/lib/libpthread.dll.a
+
 
 ########################
 # INTERNAL cache entries
@@ -405,4 +441,46 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 CMAKE_STRIP-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding OpenMP
+FIND_PACKAGE_MESSAGE_DETAILS_OpenMP:INTERNAL=[TRUE][TRUE][c ][v4.5()]
+//Details about finding OpenMP_C
+FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_C:INTERNAL=[-fopenmp][C:/msys64/mingw64/lib/libgomp.dll.a][C:/msys64/mingw64/lib/libmingwthrd.a][C:/msys64/mingw64/lib/libmingw32.a][C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/libgcc.a][C:/msys64/mingw64/lib/libmoldname.a][C:/msys64/mingw64/lib/libmingwex.a][C:/msys64/mingw64/lib/libpthread.dll.a][C:/msys64/mingw64/lib/libmingwthrd.a][C:/msys64/mingw64/lib/libmingw32.a][C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/libgcc.a][C:/msys64/mingw64/lib/libmoldname.a][C:/msys64/mingw64/lib/libmingwex.a][v4.5()]
+//Details about finding OpenMP_CXX
+FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_CXX:INTERNAL=[-fopenmp][C:/msys64/mingw64/lib/libgomp.dll.a][C:/msys64/mingw64/lib/libmingwthrd.a][C:/msys64/mingw64/lib/libmingw32.a][C:/msys64/mingw64/lib/libgcc_s.a][C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/libgcc.a][C:/msys64/mingw64/lib/libmoldname.a][C:/msys64/mingw64/lib/libmingwex.a][C:/msys64/mingw64/lib/libpthread.dll.a][C:/msys64/mingw64/lib/libmingwthrd.a][C:/msys64/mingw64/lib/libmingw32.a][C:/msys64/mingw64/lib/libgcc_s.a][C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/libgcc.a][C:/msys64/mingw64/lib/libmoldname.a][C:/msys64/mingw64/lib/libmingwex.a][v4.5()]
+//Result of TRY_COMPILE
+OpenMP_COMPILE_RESULT_CXX_fopenmp:INTERNAL=TRUE
+//Result of TRY_COMPILE
+OpenMP_COMPILE_RESULT_C_fopenmp:INTERNAL=TRUE
+//ADVANCED property for variable: OpenMP_CXX_FLAGS
+OpenMP_CXX_FLAGS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OpenMP_CXX_LIB_NAMES
+OpenMP_CXX_LIB_NAMES-ADVANCED:INTERNAL=1
+//CXX compiler's OpenMP specification date
+OpenMP_CXX_SPEC_DATE:INTERNAL=201511
+//ADVANCED property for variable: OpenMP_C_FLAGS
+OpenMP_C_FLAGS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OpenMP_C_LIB_NAMES
+OpenMP_C_LIB_NAMES-ADVANCED:INTERNAL=1
+//C compiler's OpenMP specification date
+OpenMP_C_SPEC_DATE:INTERNAL=201511
+//Result of TRY_COMPILE
+OpenMP_SPECTEST_CXX_:INTERNAL=TRUE
+//Result of TRY_COMPILE
+OpenMP_SPECTEST_C_:INTERNAL=TRUE
+//ADVANCED property for variable: OpenMP_gcc_LIBRARY
+OpenMP_gcc_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OpenMP_gcc_s_LIBRARY
+OpenMP_gcc_s_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OpenMP_gomp_LIBRARY
+OpenMP_gomp_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OpenMP_mingw32_LIBRARY
+OpenMP_mingw32_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OpenMP_mingwex_LIBRARY
+OpenMP_mingwex_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OpenMP_mingwthrd_LIBRARY
+OpenMP_mingwthrd_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OpenMP_moldname_LIBRARY
+OpenMP_moldname_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OpenMP_pthread_LIBRARY
+OpenMP_pthread_LIBRARY-ADVANCED:INTERNAL=1
 

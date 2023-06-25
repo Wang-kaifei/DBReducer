@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/DBReducer.dir/Param.cpp.obj"
   "CMakeFiles/DBReducer.dir/Param.cpp.obj.d"
+  "CMakeFiles/DBReducer.dir/Rebuild-spec.cpp.obj"
+  "CMakeFiles/DBReducer.dir/Rebuild-spec.cpp.obj.d"
   "CMakeFiles/DBReducer.dir/Rebuild.cpp.obj"
   "CMakeFiles/DBReducer.dir/Rebuild.cpp.obj.d"
   "CMakeFiles/DBReducer.dir/main.cpp.obj"

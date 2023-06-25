@@ -4,6 +4,7 @@ CMakeFiles/DBReducer.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/c++config.h \
  C:/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/os_defines.h \
  C:/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/cpu_defines.h \
+ C:/msys64/mingw64/include/c++/12.2.0/pstl/pstl_config.h \
  C:/msys64/mingw64/include/c++/12.2.0/ostream \
  C:/msys64/mingw64/include/c++/12.2.0/ios \
  C:/msys64/mingw64/include/c++/12.2.0/iosfwd \
@@ -37,6 +38,16 @@ CMakeFiles/DBReducer.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/type_traits \
  C:/msys64/mingw64/include/c++/12.2.0/bits/nested_exception.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/char_traits.h \
+ C:/msys64/mingw64/include/c++/12.2.0/compare \
+ C:/msys64/mingw64/include/c++/12.2.0/concepts \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/stl_construct.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/stl_iterator_base_types.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/iterator_concepts.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/ptr_traits.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/ranges_cmp.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/stl_iterator_base_funcs.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/concept_check.h \
+ C:/msys64/mingw64/include/c++/12.2.0/debug/assertions.h \
  C:/msys64/mingw64/include/c++/12.2.0/cstdint \
  C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/stdint.h \
  C:/msys64/mingw64/include/stdint.h \
@@ -73,13 +84,8 @@ CMakeFiles/DBReducer.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/bits/cpp_type_traits.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/ostream_insert.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/cxxabi_forced.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_iterator_base_types.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_iterator_base_funcs.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/concept_check.h \
- C:/msys64/mingw64/include/c++/12.2.0/debug/assertions.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/stl_iterator.h \
  C:/msys64/mingw64/include/c++/12.2.0/ext/type_traits.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/ptr_traits.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/stl_function.h \
  C:/msys64/mingw64/include/c++/12.2.0/backward/binders.h \
  C:/msys64/mingw64/include/c++/12.2.0/ext/numeric_traits.h \
@@ -95,7 +101,12 @@ CMakeFiles/DBReducer.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/bits/basic_string.h \
  C:/msys64/mingw64/include/c++/12.2.0/ext/alloc_traits.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/alloc_traits.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_construct.h \
+ C:/msys64/mingw64/include/c++/12.2.0/string_view \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/functional_hash.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/ranges_base.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/max_size_type.h \
+ C:/msys64/mingw64/include/c++/12.2.0/numbers \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/string_view.tcc \
  C:/msys64/mingw64/include/c++/12.2.0/ext/string_conversions.h \
  C:/msys64/mingw64/include/c++/12.2.0/cstdlib \
  C:/msys64/mingw64/include/stdlib.h \
@@ -107,7 +118,6 @@ CMakeFiles/DBReducer.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/cstdio \
  C:/msys64/mingw64/include/c++/12.2.0/cerrno \
  C:/msys64/mingw64/include/c++/12.2.0/bits/charconv.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/functional_hash.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc \
  C:/msys64/mingw64/include/c++/12.2.0/bits/locale_classes.tcc \
  C:/msys64/mingw64/include/c++/12.2.0/system_error \
@@ -330,6 +340,9 @@ CMakeFiles/DBReducer.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/direct.h C:/msys64/mingw64/include/io.h \
  C:/msys64/mingw64/include/c++/12.2.0/sstream \
  C:/msys64/mingw64/include/c++/12.2.0/bits/sstream.tcc \
+ C:/msys64/mingw64/include/c++/12.2.0/deque \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/stl_deque.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/deque.tcc \
  C:/msys64/mingw64/include/c++/12.2.0/chrono \
  C:/msys64/mingw64/include/c++/12.2.0/bits/chrono.h \
  C:/msys64/mingw64/include/c++/12.2.0/ratio \
@@ -340,6 +353,7 @@ CMakeFiles/DBReducer.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/map \
  C:/msys64/mingw64/include/c++/12.2.0/bits/stl_tree.h \
  C:/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/stl_map.h \
  C:/msys64/mingw64/include/c++/12.2.0/tuple \
  C:/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
@@ -357,6 +371,11 @@ CMakeFiles/DBReducer.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/bits/stl_heap.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/stl_tempbuf.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/uniform_int_dist.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/ranges_algo.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/ranges_algobase.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/ranges_util.h \
+ C:/msys64/mingw64/include/c++/12.2.0/pstl/glue_algorithm_defs.h \
+ C:/msys64/mingw64/include/c++/12.2.0/pstl/execution_defs.h \
  D:/DBReducer/DBReducer_code/DBReducer/Param.hpp \
  D:/DBReducer/DBReducer_code/DBReducer/Rebuild.hpp \
  C:/msys64/mingw64/include/c++/12.2.0/set \
@@ -366,4 +385,7 @@ CMakeFiles/DBReducer.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
+ C:/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+ D:/DBReducer/DBReducer_code/DBReducer/Rebuild-spec.hpp \
+ C:/msys64/mingw64/include/c++/12.2.0/unordered_set \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/unordered_set.h

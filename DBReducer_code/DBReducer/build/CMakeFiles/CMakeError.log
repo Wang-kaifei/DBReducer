@@ -1,10 +1,10 @@
 Detecting C compiler ABI info failed to compile with the following output:
 Change Dir: D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/msys64/mingw64/bin/make.exe -f Makefile cmTC_56ad4/fast && C:/msys64/mingw64/bin/make.exe  -f CMakeFiles/cmTC_56ad4.dir/build.make CMakeFiles/cmTC_56ad4.dir/build
+Run Build Command(s):C:/msys64/mingw64/bin/make.exe -f Makefile cmTC_faf1b/fast && C:/msys64/mingw64/bin/make.exe  -f CMakeFiles/cmTC_faf1b.dir/build.make CMakeFiles/cmTC_faf1b.dir/build
 make[1]: Entering directory 'D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_56ad4.dir/CMakeCCompilerABI.c.obj
-C:/msys64/mingw64/bin/cc.exe   -v -o CMakeFiles/cmTC_56ad4.dir/CMakeCCompilerABI.c.obj -c "C:/Program Files/CMake/share/cmake-3.21/Modules/CMakeCCompilerABI.c"
+Building C object CMakeFiles/cmTC_faf1b.dir/CMakeCCompilerABI.c.obj
+C:/msys64/mingw64/bin/cc.exe   -v -o CMakeFiles/cmTC_faf1b.dir/CMakeCCompilerABI.c.obj -c "C:/Program Files/CMake/share/cmake-3.21/Modules/CMakeCCompilerABI.c"
 Using built-in specs.
 COLLECT_GCC=C:\msys64\mingw64\bin\cc.exe
 Target: x86_64-w64-mingw32
@@ -14,14 +14,14 @@ Supported LTO compression algorithms: zlib zstd
 gcc version 12.2.0 (Rev1, Built by MSYS2 project) 
 COMPILER_PATH=C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/;C:/msys64/mingw64/bin/../lib/gcc/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/bin/
 LIBRARY_PATH=C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/;C:/msys64/mingw64/bin/../lib/gcc/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_56ad4.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_56ad4.dir/CMakeCCompilerABI.c.'
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_faf1b.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_faf1b.dir/CMakeCCompilerABI.c.'
 cc.exe: warning: C:/Program: linker input file unused because linking not done
 cc.exe: error: C:/Program: linker input file not found: No such file or directory
 cc.exe: warning: Files/CMake/share/cmake-3.21/Modules/CMakeCCompilerABI.c\: linker input file unused because linking not done
 cc.exe: error: Files/CMake/share/cmake-3.21/Modules/CMakeCCompilerABI.c\: linker input file not found: No such file or directory
-make[1]: *** [CMakeFiles/cmTC_56ad4.dir/build.make:78: CMakeFiles/cmTC_56ad4.dir/CMakeCCompilerABI.c.obj] Error 1
+make[1]: *** [CMakeFiles/cmTC_faf1b.dir/build.make:78: CMakeFiles/cmTC_faf1b.dir/CMakeCCompilerABI.c.obj] Error 1
 make[1]: Leaving directory 'D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:127: cmTC_56ad4/fast] Error 2
+make: *** [Makefile:127: cmTC_faf1b/fast] Error 2
 
 
 
@@ -29,10 +29,10 @@ make: *** [Makefile:127: cmTC_56ad4/fast] Error 2
 Detecting CXX compiler ABI info failed to compile with the following output:
 Change Dir: D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/msys64/mingw64/bin/make.exe -f Makefile cmTC_6001f/fast && C:/msys64/mingw64/bin/make.exe  -f CMakeFiles/cmTC_6001f.dir/build.make CMakeFiles/cmTC_6001f.dir/build
+Run Build Command(s):C:/msys64/mingw64/bin/make.exe -f Makefile cmTC_af990/fast && C:/msys64/mingw64/bin/make.exe  -f CMakeFiles/cmTC_af990.dir/build.make CMakeFiles/cmTC_af990.dir/build
 make[1]: Entering directory 'D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_6001f.dir/CMakeCXXCompilerABI.cpp.obj
-C:/msys64/mingw64/bin/c++.exe   -v -o CMakeFiles/cmTC_6001f.dir/CMakeCXXCompilerABI.cpp.obj -c "C:/Program Files/CMake/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp"
+Building CXX object CMakeFiles/cmTC_af990.dir/CMakeCXXCompilerABI.cpp.obj
+C:/msys64/mingw64/bin/c++.exe   -v -o CMakeFiles/cmTC_af990.dir/CMakeCXXCompilerABI.cpp.obj -c "C:/Program Files/CMake/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp"
 Using built-in specs.
 COLLECT_GCC=C:\msys64\mingw64\bin\c++.exe
 Target: x86_64-w64-mingw32
@@ -42,14 +42,14 @@ Supported LTO compression algorithms: zlib zstd
 gcc version 12.2.0 (Rev1, Built by MSYS2 project) 
 COMPILER_PATH=C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/;C:/msys64/mingw64/bin/../lib/gcc/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/bin/
 LIBRARY_PATH=C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/;C:/msys64/mingw64/bin/../lib/gcc/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/lib/;C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6001f.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6001f.dir/CMakeCXXCompilerABI.cpp.'
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_af990.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_af990.dir/CMakeCXXCompilerABI.cpp.'
 c++.exe: warning: C:/Program: linker input file unused because linking not done
 c++.exe: error: C:/Program: linker input file not found: No such file or directory
 c++.exe: warning: Files/CMake/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp\: linker input file unused because linking not done
 c++.exe: error: Files/CMake/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp\: linker input file not found: No such file or directory
-make[1]: *** [CMakeFiles/cmTC_6001f.dir/build.make:78: CMakeFiles/cmTC_6001f.dir/CMakeCXXCompilerABI.cpp.obj] Error 1
+make[1]: *** [CMakeFiles/cmTC_af990.dir/build.make:78: CMakeFiles/cmTC_af990.dir/CMakeCXXCompilerABI.cpp.obj] Error 1
 make[1]: Leaving directory 'D:/DBReducer/DBReducer_code/DBReducer/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:127: cmTC_6001f/fast] Error 2
+make: *** [Makefile:127: cmTC_af990/fast] Error 2
 
 
 

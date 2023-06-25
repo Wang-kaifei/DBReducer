@@ -153,6 +153,30 @@ Param.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/DBReducer.dir/build.make CMakeFiles/DBReducer.dir/Param.cpp.s
 .PHONY : Param.cpp.s
 
+Rebuild-spec.obj: Rebuild-spec.cpp.obj
+.PHONY : Rebuild-spec.obj
+
+# target to build an object file
+Rebuild-spec.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/DBReducer.dir/build.make CMakeFiles/DBReducer.dir/Rebuild-spec.cpp.obj
+.PHONY : Rebuild-spec.cpp.obj
+
+Rebuild-spec.i: Rebuild-spec.cpp.i
+.PHONY : Rebuild-spec.i
+
+# target to preprocess a source file
+Rebuild-spec.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/DBReducer.dir/build.make CMakeFiles/DBReducer.dir/Rebuild-spec.cpp.i
+.PHONY : Rebuild-spec.cpp.i
+
+Rebuild-spec.s: Rebuild-spec.cpp.s
+.PHONY : Rebuild-spec.s
+
+# target to generate assembly for a file
+Rebuild-spec.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/DBReducer.dir/build.make CMakeFiles/DBReducer.dir/Rebuild-spec.cpp.s
+.PHONY : Rebuild-spec.cpp.s
+
 Rebuild.obj: Rebuild.cpp.obj
 .PHONY : Rebuild.obj
 
@@ -213,6 +237,9 @@ help:
 	@echo "... Param.obj"
 	@echo "... Param.i"
 	@echo "... Param.s"
+	@echo "... Rebuild-spec.obj"
+	@echo "... Rebuild-spec.i"
+	@echo "... Rebuild-spec.s"
 	@echo "... Rebuild.obj"
 	@echo "... Rebuild.i"
 	@echo "... Rebuild.s"
