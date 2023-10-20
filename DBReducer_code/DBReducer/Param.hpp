@@ -19,6 +19,7 @@ public:
     int multip; // 进程数
     int thread; // 谱图线程数
     long long maxspec; // 每轮处理的谱图数
+    int output_pro_info = 1; // 需指定，1表示运行pFind的蛋白质推断模块，并由此生成fasta文件
     long long maxprolen; // 一次读入的蛋白质总长度
     std::string activation_type; // 高低精度数据区分
     int msmsnum; // 数据集数量
@@ -51,6 +52,7 @@ public:
         msmsfolder = pAnno_param.msmsfolder;
         msmspaths.assign(pAnno_param.msmspaths.begin(), pAnno_param.msmspaths.end());
         msmstype = pAnno_param.msmstype;
+        output_pro_info = pAnno_param.output_pro_info;
     };
     PFindParams(){};
     // [param]
@@ -92,6 +94,7 @@ public:
     int rest_mod_num = 10;
     int salvo_iteration = 1;
     int salvo_mod_num = 5;
+    int output_pro_info = 1; // 需指定，1表示运行pFind的蛋白质推断模块，并由此生成fasta文件
     // [file]
     std::string modpath = ""; // 需指定
     std::string fastapath = ""; // 需指定

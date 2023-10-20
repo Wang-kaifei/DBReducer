@@ -47,6 +47,8 @@ void Params::LoadParam(const std::string &cfgpath) {
 			this->maxprolen = std::stoll(value);
         else if (key == "maxspec")
 			this->maxspec = std::stoll(value);
+        else if (key == "output_pro_info")
+			this->output_pro_info = std::stoi(value);
         else if (key == "activation_type")
 			this->activation_type = value;
         else if (key == "msmsnum")
@@ -141,7 +143,8 @@ void PFindParams::Write(const std::string &out_path) {
     write_line(this->rest_tag_len, "rest_tag_len="); 
     write_line(this->rest_mod_num, "rest_mod_num=");
     write_line(this->salvo_iteration, "salvo_iteration="); 
-    write_line(this->salvo_mod_num, "salvo_mod_num=");
+    write_line(this->salvo_mod_num, "salvo_mod_numtmp=");
+    write_line(this->output_pro_info, "output_pro_info=");
     fwrite(title_file.c_str(), title_file.length(), 1, cfg_file);
     write_line_string(this->modpath, "modpath="); 
     write_line_string(this->fastapath, "fastapath=");

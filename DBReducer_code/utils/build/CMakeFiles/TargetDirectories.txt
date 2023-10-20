@@ -1,3 +1,0 @@
-C:/Users/pFind/Desktop/pAnno_wkf/utils/build/CMakeFiles/Utils.dir
-C:/Users/pFind/Desktop/pAnno_wkf/utils/build/CMakeFiles/edit_cache.dir
-C:/Users/pFind/Desktop/pAnno_wkf/utils/build/CMakeFiles/rebuild_cache.dir
