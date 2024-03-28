@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2022-06-27 13:24:46
  * @LastEditors: Kaifei
- * @LastEditTime: 2023-05-31 16:48:37
+ * @LastEditTime: 2023-12-08 10:02:57
  */
 
 #include "Param.hpp"
@@ -74,7 +74,7 @@ void StoreProbyLine(const std::deque<RawRes> &lines, std::deque<Protein> *pros) 
     std::hash<std::string> hasher; // 散列器
     int i = 0;
     std::unordered_map<size_t, std::vector<Protein>> hash_pro_table; // key = hash code of name, value = the pros have this key hash name
-    // #pragma omp parallel for num_threads(20)
+    #pragma omp parallel for num_threads(20)
     for (auto line = lines.begin(); line != lines.end(); line++) {
         auto names = SplitRule(line->pros, "/"); // 肽段对应到的蛋白质
         double code = GetGodel(line->pep); // 肽段编码

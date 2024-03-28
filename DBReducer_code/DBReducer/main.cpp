@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-12-20 22:30:44
  * @LastEditors: Kaifei
- * @LastEditTime: 2023-10-20 16:06:30
+ * @LastEditTime: 2024-03-28 17:33:20
  */
 #include <iostream>
 #include <windows.h>
@@ -84,19 +84,6 @@ int main(int argc, char **argv) {
 		ReduSpec::GroupPros(&pros); // 将蛋白分组（标记subset蛋白）
 		ReduSpec::ReduceDB(param.RefinedPath, pros, name_seq, name_full_name);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 	// if (option == 1) { // 如果是1，不做搜索直接根据.spctra文件建库
 	// 	std::cout << "No search\n";
 	// 	std::deque<ReduSpec::RawRes> lines; // .spectra文件读取的原始结果

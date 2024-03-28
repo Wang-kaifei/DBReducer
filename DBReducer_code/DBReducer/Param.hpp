@@ -16,10 +16,13 @@ public:
     std::string SearchRes; // pFind输出结果路径
     std::string RefinedPath; // pFind输出结果路径
     double threshold = 0.01; // 谱图/肽段层次的FDR限制
+    int len_upper = 6;
+    int len_lower = 100;
     int multip; // 进程数
     int thread; // 谱图线程数
     long long maxspec; // 每轮处理的谱图数
     int output_pro_info = 1; // 需指定，1表示运行pFind的蛋白质推断模块，并由此生成fasta文件
+    std::string train_data = ""; // 扩充训练集的路径
     long long maxprolen; // 一次读入的蛋白质总长度
     std::string activation_type; // 高低精度数据区分
     int msmsnum; // 数据集数量
@@ -53,6 +56,11 @@ public:
         msmspaths.assign(pAnno_param.msmspaths.begin(), pAnno_param.msmspaths.end());
         msmstype = pAnno_param.msmstype;
         output_pro_info = pAnno_param.output_pro_info;
+        train_data = pAnno_param.train_data;
+        len_lower = pAnno_param.len_lower;
+        len_upper = pAnno_param.len_upper;
+        mass_lower = 100 * len_lower;
+        mass_upper = 100 * len_upper;
     };
     PFindParams(){};
     // [param]
@@ -95,6 +103,7 @@ public:
     int salvo_iteration = 1;
     int salvo_mod_num = 5;
     int output_pro_info = 1; // 需指定，1表示运行pFind的蛋白质推断模块，并由此生成fasta文件
+    std::string train_data = "";
     // [file]
     std::string modpath = ""; // 需指定
     std::string fastapath = ""; // 需指定

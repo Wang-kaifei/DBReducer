@@ -39,6 +39,10 @@ void Params::LoadParam(const std::string &cfgpath) {
         }
         else if (key == "threshold")
 			this->threshold = std::stod(value);
+        else if (key == "len_lower")
+			this->len_lower = std::stod(value);
+        else if (key == "len_upper")
+            this->len_upper = std::stod(value);
         else if (key == "multip")
 			this->multip = std::stoi(value);
         else if (key == "thread")
@@ -49,6 +53,8 @@ void Params::LoadParam(const std::string &cfgpath) {
 			this->maxspec = std::stoll(value);
         else if (key == "output_pro_info")
 			this->output_pro_info = std::stoi(value);
+        else if (key == "train_data")
+			this->train_data = value;
         else if (key == "activation_type")
 			this->activation_type = value;
         else if (key == "msmsnum")
@@ -145,6 +151,8 @@ void PFindParams::Write(const std::string &out_path) {
     write_line(this->salvo_iteration, "salvo_iteration="); 
     write_line(this->salvo_mod_num, "salvo_mod_numtmp=");
     write_line(this->output_pro_info, "output_pro_info=");
+    if (this->train_data != "")
+        write_line_string(this->train_data, "train_data=");
     fwrite(title_file.c_str(), title_file.length(), 1, cfg_file);
     write_line_string(this->modpath, "modpath="); 
     write_line_string(this->fastapath, "fastapath=");
