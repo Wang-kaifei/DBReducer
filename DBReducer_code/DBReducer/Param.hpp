@@ -18,6 +18,10 @@ public:
     double threshold = 0.01; // 谱图/肽段层次的FDR限制
     int len_upper = 6;
     int len_lower = 100;
+    double mstol = 20; // 母离子误差
+    double msmstol = 20; // 碎片离子误差
+    int mstolppm = 1; // 母离子误差类型，1：ppm，0：Da
+    int msmstolppm = 1; // 碎片离子误差类型，1：ppm，0：Da
     int multip; // 进程数
     int thread; // 谱图线程数
     long long maxspec; // 每轮处理的谱图数
@@ -37,39 +41,43 @@ public:
 class PFindParams {
 public:
     virtual ~PFindParams(){};
-    PFindParams(const Params &pAnno_param) {
-        multip = pAnno_param.multip;
-        thread = pAnno_param.thread;
-        maxprolen = pAnno_param.maxprolen;
-        maxspec = pAnno_param.maxspec;
-        activation_type = pAnno_param.activation_type;
-        selectmod = pAnno_param.selectmod;
-        fixmod = pAnno_param.fixmod;
-        psm_fdr = pAnno_param.threshold;
-        pro_fdr = pAnno_param.threshold;
+    PFindParams(const Params &DBRparam) {
+        multip = DBRparam.multip;
+        thread = DBRparam.thread;
+        maxprolen = DBRparam.maxprolen;
+        maxspec = DBRparam.maxspec;
+        activation_type = DBRparam.activation_type;
+        selectmod = DBRparam.selectmod;
+        fixmod = DBRparam.fixmod;
+        psm_fdr = DBRparam.threshold;
+        pro_fdr = DBRparam.threshold;
         open = 5; // 5是DBReducer对应的搜索模式
-        modpath = pAnno_param.SearchRes + "\\modification.ini";
-        fastapath = pAnno_param.ProteinDatabase;
-        outputpath = pAnno_param.SearchRes;
-        msmsnum = pAnno_param.msmsnum;
-        msmsfolder = pAnno_param.msmsfolder;
-        msmspaths.assign(pAnno_param.msmspaths.begin(), pAnno_param.msmspaths.end());
-        msmstype = pAnno_param.msmstype;
-        output_pro_info = pAnno_param.output_pro_info;
-        train_data = pAnno_param.train_data;
-        len_lower = pAnno_param.len_lower;
-        len_upper = pAnno_param.len_upper;
+        modpath = DBRparam.SearchRes + "\\modification.ini";
+        fastapath = DBRparam.ProteinDatabase;
+        outputpath = DBRparam.SearchRes;
+        msmsnum = DBRparam.msmsnum;
+        msmsfolder = DBRparam.msmsfolder;
+        msmspaths.assign(DBRparam.msmspaths.begin(), DBRparam.msmspaths.end());
+        msmstype = DBRparam.msmstype;
+        output_pro_info = DBRparam.output_pro_info;
+        train_data = DBRparam.train_data;
+        len_lower = DBRparam.len_lower;
+        len_upper = DBRparam.len_upper;
         mass_lower = 100 * len_lower;
         mass_upper = 100 * len_upper;
+        mstol = DBRparam.mstol;
+        mstolppm = DBRparam.mstolppm;
+        msmstol = DBRparam.msmstol;
+        msmstolppm = DBRparam.msmstolppm;
     };
     PFindParams(){};
     // [param]
     int multip = 1; // 需指定
     int thread = 2; // 需指定
     std::string activation_type = "HCD-FTMS"; // 需指定
-    int mstol = 20;
+    double mstol = 20;
     int mstolppm = 1;
-    int msmstol = 20;
+    double msmstol = 20;
     int msmstolppm = 1;
     int temppepnum = 100;
     int pepnum = 10;
