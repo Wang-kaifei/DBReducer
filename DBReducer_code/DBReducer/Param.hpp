@@ -51,7 +51,11 @@ public:
         fixmod = DBRparam.fixmod;
         psm_fdr = DBRparam.threshold;
         pro_fdr = DBRparam.threshold;
-        open = 5; // 5是DBReducer对应的搜索模式
+        if (activation_type.find("ITMS") != std::string::npos) {
+            open = 0; // 如果是低精度数据则用限定式缩库
+        } else {
+            open = 5; // 高精度用Open缩库
+        }
         modpath = DBRparam.SearchRes + "\\modification.ini";
         fastapath = DBRparam.ProteinDatabase;
         outputpath = DBRparam.SearchRes;
