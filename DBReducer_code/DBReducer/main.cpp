@@ -3,8 +3,8 @@
  * @version: 
  * @Author: sueRimn
  * @Date: 2021-12-20 22:30:44
- * @LastEditors: Kaifei
- * @LastEditTime: 2024-04-01 10:22:27
+ * @LastEditors: wangkaifei kfwang@stu.xidian.edu.cn
+ * @LastEditTime: 2024-08-21 21:44:53
  */
 #include <iostream>
 #include <windows.h>
@@ -25,8 +25,8 @@
 #include "Rebuild-spec.hpp"
 
 using namespace std;
-void ReadMod(const Params &pAnno_param, std::set<std::string> *mods);
-void WriteMod(const std::string &all_mod_path, const std::set<std::string> &sub_mods, const std::string &out_path);
+void ReadMod(const Params &pAnno_param, std::unordered_set<std::string> *mods);
+void WriteMod(const std::string &raw_mod_path, const std::unordered_set<std::string> &mods, const std::string &new_mod_path);
 
 int main(int argc, char **argv) {
 	ReduSpec::GodelInitialize(); // Init godel coding table
@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
 			}
 		}
 		PFindParams pFind_params(param); // 加载pFind参数
-		std::set<std::string> mods; // 总体要考虑的修饰
+		std::unordered_set<std::string> mods; // 总体要考虑的修饰
 		ReadMod(param, &mods);
 		WriteMod(pFind_path + "\\modification.ini", mods, pFind_params.modpath); // 写出要考虑的修饰
 		std::string pFind_cfg_path = param.SearchRes + "\\pFind.cfg";
@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
 			}
 		}
 		PFindParams pFind_params(param); // 加载pFind参数
-		std::set<std::string> mods; // 总体要考虑的修饰
+		std::unordered_set<std::string> mods; // 总体要考虑的修饰
 		ReadMod(param, &mods);
 		WriteMod(pFind_path + "\\modification.ini", mods, pFind_params.modpath); // 写出要考虑的修饰
 		std::string pFind_cfg_path = param.SearchRes + "\\pFind.cfg";
@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
-void ReadMod(const Params &pAnno_param, std::set<std::string> *mods) {
+void ReadMod(const Params &pAnno_param, std::unordered_set<std::string> *mods) {
 	auto segs1 = Split(pAnno_param.selectmod, ";");
 	auto segs2 = Split(pAnno_param.fixmod, ";");
 	for (auto seg : segs1) {
@@ -145,34 +145,44 @@ void ReadMod(const Params &pAnno_param, std::set<std::string> *mods) {
 	}
 }
 
-void WriteMod(const std::string &all_mod_path, const std::set<std::string> &sub_mods, const std::string &out_path) {
-	int32_t cnt = 0;
-	std::ifstream buffer = ReadFilebyStream(all_mod_path);
-	FILE * refined_mod_file = OpenFileWrite(out_path);
-    setvbuf ( refined_mod_file , NULL , _IOFBF , 1024000 );
-	std::string linestr;
-    while (!buffer.eof()) {
-        getline(buffer, linestr);
-		if ("name" == linestr.substr(0, 4)) {
-			auto segs = SplitByChars(linestr, "= ");
-			if (segs.size() < 3) {
-				std::cout << "Please cheack the modification: " << linestr << std::endl;
-				continue;
-			}
-			if (sub_mods.find(segs[1]) != sub_mods.end()) { // 应该被写入
-				fwrite(linestr.c_str(), linestr.length(), 1, refined_mod_file); // 写入修饰名
-				fwrite("\n", 1, 1, refined_mod_file);
+/**
+ * @brief 从原始mod文件中挑选修饰并写出
+ * 
+ * @param mods 待写出的修饰
+ * @param raw_mod_path 原始mod文件
+ * @param new_mod_path 新mod文件
+ */
+void WriteMod(const std::string &raw_mod_path, const std::unordered_set<std::string> &mods, const std::string &new_mod_path) {
+	std::cout << mods.size() << std::endl;
+	for (auto mod : mods) {
+		 std::cout << mod << std::endl;
+	}
+	FILE* out_file = OpenFileWrite(new_mod_path);
+	setvbuf ( out_file , NULL , _IOFBF , 102400 );
+	std::string title = "@NUMBER_MODIFICATION=" + std::to_string(mods.size()) + "\n";
+	fwrite(title.c_str(), title.length(), 1, out_file); // 写文件头
+	std::ifstream buffer = ReadFilebyStream(raw_mod_path);
+    std::string linestr = "";
+	int write_cnt = 0;
+    while(!buffer.eof() && getline(buffer, linestr)) {
+		if (linestr.substr(0, 4) == "name") {
+			std::string mod_name = SplitByChars(linestr, " =\t\n")[1];
+			if (find(mods.begin(), mods.end(), mod_name) != mods.end()) {
+				write_cnt++;
+				std::string name_line = "name" + std::to_string(write_cnt) + "=" + SplitByChars(linestr, "=")[1] + "\n";
+				fwrite(name_line.c_str(), name_line.length(), 1, out_file);
 				if (buffer.eof()) {
-					std::cout << "Please cheack the modification: " << linestr << std::endl;
-					break;
+					std::cout << "Please cheack the modification file!\n";
+					exit(1);
 				}
 				getline(buffer, linestr);
-				fwrite(linestr.c_str(), linestr.length(), 1, refined_mod_file); // 写入修饰内容
-				fwrite("\n", 1, 1, refined_mod_file);
-				if (++cnt >= sub_mods.size())
+				fwrite(linestr.c_str(), linestr.length(), 1, out_file);
+				fwrite("\n", 1, 1, out_file);
+				if (write_cnt == mods.size())
 					break;
 			}
 		}
     }
-	fclose(refined_mod_file);
+	buffer.close();
+	fclose(out_file);
 }
