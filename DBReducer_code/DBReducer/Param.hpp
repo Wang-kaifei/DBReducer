@@ -29,6 +29,9 @@ public:
     std::string train_data = ""; // 扩充训练集的路径
     long long maxprolen; // 一次读入的蛋白质总长度
     std::string activation_type; // 高低精度数据区分
+    std::string enzyme; // 酶切类型
+    int digest = 3; // 酶切类型
+    int max_clv_sites = 3; // 最大遗漏酶切位点数
     int msmsnum; // 数据集数量
     int msmsfolder = 0; // 文件夹数量
     std::vector<std::string> msmspaths; // 存储数据集的路径
@@ -73,6 +76,9 @@ public:
         mstolppm = DBRparam.mstolppm;
         msmstol = DBRparam.msmstol;
         msmstolppm = DBRparam.msmstolppm;
+        enzyme = DBRparam.enzyme;
+        digest = DBRparam.digest;
+        max_clv_sites = DBRparam.max_clv_sites;
     };
     PFindParams(){};
     // [param]

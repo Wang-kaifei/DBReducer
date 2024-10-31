@@ -51,6 +51,12 @@ void Params::LoadParam(const std::string &cfgpath) {
 			this->mstolppm = std::stoi(value);
         else if (key == "msmstolppm")
 			this->msmstolppm = std::stoi(value);
+        else if (key == "enzyme")
+            this->enzyme = value;
+        else if (key == "digest")
+            this->digest = std::stoi(value);
+        else if (key == "max_clv_sites")
+            this->max_clv_sites = std::stoi(value);
         else if (key == "multip")
 			this->multip = std::stoi(value);
         else if (key == "thread")
