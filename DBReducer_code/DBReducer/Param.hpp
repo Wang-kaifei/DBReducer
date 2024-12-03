@@ -34,6 +34,7 @@ public:
     int max_clv_sites = 3; // 最大遗漏酶切位点数
     int msmsnum; // 数据集数量
     int msmsfolder = 0; // 文件夹数量
+    int search_mode = -1; // 搜索模式，默认是open搜索
     std::vector<std::string> msmspaths; // 存储数据集的路径
     std::string msmstype; // 数据集文件类型
     void LoadParam(const std::string &cfgpath);
@@ -58,6 +59,9 @@ public:
             open = 0; // 如果是低精度数据则用限定式缩库
         } else {
             open = 5; // 高精度用Open缩库
+        }
+        if (DBRparam.search_mode != -1) { // 用户指定搜索模式
+            open = DBRparam.search_mode;
         }
         modpath = DBRparam.SearchRes + "\\modification.ini";
         fastapath = DBRparam.ProteinDatabase;

@@ -71,6 +71,8 @@ void Params::LoadParam(const std::string &cfgpath) {
 			this->train_data = value;
         else if (key == "activation_type")
 			this->activation_type = value;
+        else if (key == "search_mode")
+            this->search_mode = std::stoi(value);
         else if (key == "msmsnum")
 			this->msmsnum = std::stoi(value);
         else if (key == "msmsfolder")
