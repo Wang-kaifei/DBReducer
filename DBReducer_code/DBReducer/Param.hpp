@@ -34,6 +34,8 @@ public:
     int max_clv_sites = 3; // 最大遗漏酶切位点数
     int msmsnum; // 数据集数量
     int msmsfolder = 0; // 文件夹数量
+    int mass_lower = 0;
+    int mass_upper = 0;
     int search_mode = -1; // 搜索模式，默认是open搜索
     std::vector<std::string> msmspaths; // 存储数据集的路径
     std::string msmstype; // 数据集文件类型
@@ -74,8 +76,16 @@ public:
         train_data = DBRparam.train_data;
         len_lower = DBRparam.len_lower;
         len_upper = DBRparam.len_upper;
-        mass_lower = 75 * len_lower;
-        mass_upper = 204 * len_upper;
+        if (DBRparam.mass_lower != 0) {
+            mass_lower = DBRparam.mass_lower;
+        } else {
+            mass_lower = 50 * len_lower;
+        }
+        if (DBRparam.mass_upper != 0) {
+            mass_upper = DBRparam.mass_upper;
+        } else {
+            mass_upper = std::min(500 * len_upper, 500000);
+        }
         mstol = DBRparam.mstol;
         mstolppm = DBRparam.mstolppm;
         msmstol = DBRparam.msmstol;
@@ -110,8 +120,8 @@ public:
     // [filter]
     double psm_fdr = 0.01; // 需指定
     int psm_fdr_type = 1;
-    int mass_lower = 600;
-    int mass_upper = 10000;
+    int mass_lower = 0;
+    int mass_upper = 0;
     int len_lower = 6;
     int len_upper = 100;
     int pep_per_pro = 1;

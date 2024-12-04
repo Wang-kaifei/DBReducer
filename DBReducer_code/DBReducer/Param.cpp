@@ -43,6 +43,10 @@ void Params::LoadParam(const std::string &cfgpath) {
 			this->len_lower = std::stod(value);
         else if (key == "len_upper")
             this->len_upper = std::stod(value);
+        else if (key == "mass_lower")
+			this->mass_lower = std::stoi(value);
+        else if (key == "mass_upper")
+            this->mass_upper = std::stoi(value);
         else if (key == "mstol")
 			this->mstol = std::stod(value);
         else if (key == "msmstol")
