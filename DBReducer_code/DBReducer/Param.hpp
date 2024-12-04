@@ -74,8 +74,8 @@ public:
         train_data = DBRparam.train_data;
         len_lower = DBRparam.len_lower;
         len_upper = DBRparam.len_upper;
-        mass_lower = 100 * len_lower;
-        mass_upper = 100 * len_upper;
+        mass_lower = 75 * len_lower;
+        mass_upper = 204 * len_upper;
         mstol = DBRparam.mstol;
         mstolppm = DBRparam.mstolppm;
         msmstol = DBRparam.msmstol;
