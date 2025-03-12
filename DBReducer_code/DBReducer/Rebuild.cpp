@@ -3,8 +3,8 @@
  * @version: 
  * @Author: sueRimn
  * @Date: 2022-06-27 13:24:46
- * @LastEditors: Kaifei
- * @LastEditTime: 2023-05-22 10:57:17
+ * @LastEditors: wangkaifei kfwang@stu.xidian.edu.cn
+ * @LastEditTime: 2025-03-12 11:21:01
  */
 
 #include "Param.hpp"
@@ -48,6 +48,7 @@ void BuildDict(std::unordered_map<std::string, std::string> *name_seq, const std
     while (!buffer.eof()) {
         getline(buffer, linestr);
         Strip(&linestr);
+        if (linestr.empty()) continue; // 避免空行处理
         if (linestr[0] == '>') { // 如果是蛋白名
             if (seq != "")
                 name_seq->insert(std::make_pair(name, seq));
@@ -65,6 +66,11 @@ void BuildDict(std::unordered_map<std::string, std::string> *name_seq, const std
         else
             seq += linestr;
     }
+    // 处理最后一个蛋白质序列
+    if (!name.empty() && !seq.empty()) {
+        name_seq->insert(std::make_pair(name, seq));
+    }
+    std::cout << "fasta size: " << name_seq->size() << std::endl;
 }
 
 void RebuildDtabaseMaxQuant(const std::set<std::string> &protein_names, const std::unordered_map<std::string, std::string> &name_seq, const std::unordered_map<std::string, std::string> &name_full_name, const std::string &out_path) {

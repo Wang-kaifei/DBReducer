@@ -4,7 +4,7 @@
  * @Author: sueRimn
  * @Date: 2021-12-20 22:30:44
  * @LastEditors: wangkaifei kfwang@stu.xidian.edu.cn
- * @LastEditTime: 2024-12-03 16:21:32
+ * @LastEditTime: 2025-01-24 14:27:04
  */
 #include <iostream>
 #include <windows.h>
@@ -102,6 +102,37 @@ int main(int argc, char **argv) {
 	}
 	else if (option == 2) { // 如果是2，不做搜索直接根据.protein文件建库
 		DBReducer(param.SearchRes + "/pFind.protein", param.ProteinDatabase, param.RefinedPath, param.threshold, param.isMaxQuant); // 重建数据库
+	}
+	else if (option == 3) { // 如果是3，除了根据.spectra文件建库外，还将提取FDR < param.threshold的谱图对应的top2肽段，提取其对应的蛋白质建库 
+		std::cout << "No search\n";
+		std::deque<ReduSpec::RawRes> lines; // .spectra文件读取的原始结果
+		ReduSpec::ReadRawResbySpec(param.SearchRes + "\\pFind.spectra", &lines, param.threshold);
+		std::cout << "read raw end\n";
+		std::deque<ReduSpec::Protein> pros; // 将鉴定结果按照protein组织
+		ReduSpec::StoreProbyLine(lines, &pros);
+		std::cout << "store pro end\n";
+		std::unordered_map<std::string, std::string> name_seq;
+		std::unordered_map<std::string, std::string> name_full_name;
+		BuildDict(&name_seq, param.ProteinDatabase, &name_full_name); // 将原始数据库存成dict形式
+		ReduSpec::GroupPros(&pros); // 将蛋白分组（标记subset蛋白）
+		std::cout << "group end\n";
+		ReduSpec::ReduceDB(param.RefinedPath, pros, name_seq, name_full_name);
+		//读取所有经过过滤的spectra
+		std::unordered_set<std::string> MS2s;
+		ReduSpec::ReadCredibleMS2(param.SearchRes + "\\pFind.spectra", &MS2s, param.threshold);
+		std::cout << "MS2s size: " << MS2s.size() << std::endl;
+		//读取所有top2肽段
+		std::vector<std::string> top2seqs;
+		ReduSpec::ReadTop2Seq(param.SearchRes, MS2s, &top2seqs);
+		//写出所有top2肽段
+		auto out_file = OpenFileWrite(param.SearchRes + "\\top2.pep");
+		for (auto seq : top2seqs) {
+			fwrite(seq.c_str(), seq.length(), 1, out_file);
+			fwrite("\n", 1, 1, out_file);
+		}
+		fclose(out_file);
+		//根据top2肽段建库
+		ReduSpec::GetTop2Fasta(name_seq, top2seqs, param.SearchRes + "\\top2.fasta");
 	}
 	else {
 		if (0 != access(param.SearchRes.c_str(), 0)) {

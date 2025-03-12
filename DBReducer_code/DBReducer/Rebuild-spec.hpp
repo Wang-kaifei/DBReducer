@@ -3,8 +3,8 @@
  * @version: 
  * @Author: sueRimn
  * @Date: 2022-06-27 13:24:59
- * @LastEditors: Kaifei
- * @LastEditTime: 2023-05-26 21:06:31
+ * @LastEditors: wangkaifei kfwang@stu.xidian.edu.cn
+ * @LastEditTime: 2025-01-18 18:16:02
  */
 #pragma onece
 
@@ -84,4 +84,7 @@ namespace ReduSpec {
     void StoreProbyLine(const std::deque<RawRes> &lines, std::deque<Protein> *pros);
     void ReadRawResbySpec(const std::string &file_name, std::deque<RawRes> *lines, double threshold);
     bool GodelInitialize();
+    void ReadTop2Seq(const std::string &folder_path, const std::unordered_set<std::string> &MS2s, std::vector<std::string> *top2seqs);
+    void ReadCredibleMS2(const std::string &file_name, std::unordered_set<std::string> *MS2s, double threshold = 0.01);
+    void GetTop2Fasta(const std::unordered_map<std::string, std::string> name_seq, const std::vector<std::string> &top2seqs, const std::string &out_path);
 }
