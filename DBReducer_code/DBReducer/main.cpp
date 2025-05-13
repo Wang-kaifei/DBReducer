@@ -58,7 +58,11 @@ int main(int argc, char **argv) {
 		PFindParams pFind_params(param); // 加载pFind参数
 		std::unordered_set<std::string> mods; // 总体要考虑的修饰
 		ReadMod(param, &mods);
-		WriteMod(pFind_path + "\\modification.ini", mods, pFind_params.modpath); // 写出要考虑的修饰
+		// 判断路径下是否存在modification.ini文件
+		if (0 != access((pFind_path + "\\modification.ini").c_str(), 0)) {
+			WriteMod(pFind_path + "\\modification.ini", mods, pFind_params.modpath); // 写出要考虑的修饰
+			return 0;
+		}		
 		std::string pFind_cfg_path = param.SearchRes + "\\pFind.cfg";
 		std::cout << pFind_cfg_path << std::endl;
 		pFind_params.Write(pFind_cfg_path); // 写出pFind.cfg文件
