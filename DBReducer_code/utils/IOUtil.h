@@ -23,12 +23,21 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <stdexcept>
+
+// 2026-10：打不开文件时原先直接 exit(1)，调用方没有机会写状态文件。
+// 现改为抛 FileError，由 main 统一收尾（退出码仍为 1 = param_error）。提示信息照旧打印。
+class FileError : public std::runtime_error {
+public:
+	explicit FileError(const std::string & path) : std::runtime_error(path), path(path) {}
+	std::string path;
+};
 
 inline FILE * OpenFileRead(const std::string & filename) {
 	FILE *fp = fopen(filename.c_str(), "rb");
 	if (fp == NULL) {
 		std::cout << "<DBReducer> " << filename << ": Cannot find that file!\n";
-		exit(1);
+		throw FileError(filename);
 	}
 	return fp;
 }
@@ -37,7 +46,7 @@ inline std::ifstream ReadFilebyStream(const std::string & filename) {
 	std::ifstream buffer(filename);
 	if (!buffer.is_open()) {
 		printf("Invalid path: %s\n", filename.c_str());
-        exit(1);
+		throw FileError(filename);
 	}
 	return buffer;
 }
@@ -47,7 +56,7 @@ inline FILE * OpenFileWrite(const std::string & filename) {
 	FILE *fp = fopen(filename.c_str(), "wb");
 	if (fp == NULL) {
 		std::cout << "<DBReducer> " << filename << ": Cannot find that file!\n";
-		exit(1);
+		throw FileError(filename);
 	}
 	return fp;
 }
@@ -56,7 +65,7 @@ inline FILE * OpenFileAdd(const std::string & filename) {
 	FILE *fp = fopen(filename.c_str(), "ab");
 	if (fp == NULL) {
 		std::cout << "<DBReducer> " << filename << ": Cannot find that file!\n";
-		exit(1);
+		throw FileError(filename);
 	}
 	return fp;
 }

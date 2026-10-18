@@ -1,0 +1,2 @@
+# build.ps1 的产出（exe/dll/obj），不进仓库
+dist/

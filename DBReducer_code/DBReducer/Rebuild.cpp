@@ -14,8 +14,11 @@
 #include <algorithm>
 #include <exception>
 #include <unordered_map>
+#include <unordered_set>
+#include <string_view>
 #include "../utils/IOUtil.h"
 #include "../utils/StringUtil.h"
+#include "Status.hpp"
 #define VNAME(value) (#value)
 
 void ReadProteinName(std::set<std::string> *protein_names, const std::string &protein_path, float threshold) {
@@ -73,6 +76,53 @@ void BuildDict(std::unordered_map<std::string, std::string> *name_seq, const std
     std::cout << "fasta size: " << name_seq->size() << std::endl;
 }
 
+/// D9：同 BuildDict 的解析规则，但只保留 wanted 里的蛋白，其余条目读过即丢，内存只与选中的蛋白有关。
+/// 两张表的内容与"BuildDict 整库读入后再按 wanted 取"完全相同（同样 first-wins：全名取第一次出现的表头，
+/// 序列取第一个非空序列），因此下游按名字取出的结果不变。
+/// wanted 只用来查名字是否在名单里（count），直接用调用方已有的名单，不另复制一份。
+template <class NameSet>
+void LoadSelected(const NameSet &wanted, const std::string &fasta_path,
+                  std::unordered_map<std::string, std::string> *name_seq, std::unordered_map<std::string, std::string> *name_full_name) {
+    std::ifstream buffer = ReadFilebyStream(fasta_path);
+    std::string linestr;
+    std::string name = "", seq = "";
+    bool keep = wanted.count(name) > 0; // 首个表头之前的序列行归在空名下，同 BuildDict
+    size_t scanned = 0;
+    while (!buffer.eof()) {
+        getline(buffer, linestr);
+        Strip(&linestr);
+        if (linestr.empty()) continue;
+        if (linestr[0] == '>') {
+            if (keep && seq != "")
+                name_seq->insert(std::make_pair(name, seq));
+            int pos = linestr.size();
+            if (linestr.find_first_of(" \t") != std::string::npos) {
+                pos = linestr.find_first_of(" \t");
+            }
+            auto pos2 = linestr.find_first_of("|");
+            if (pos2 != std::string::npos && pos2 > 15)
+                pos = pos2;
+            name = linestr.substr(1, pos - 1);
+            seq = "";
+            ++scanned;
+            keep = wanted.count(name) > 0;
+            if (keep)
+                name_full_name->insert(std::make_pair(name, linestr));
+        }
+        else if (keep)
+            seq += linestr;
+    }
+    if (keep && !name.empty() && !seq.empty()) {
+        name_seq->insert(std::make_pair(name, seq));
+    }
+    std::cout << "fasta scanned: " << scanned << " entries, selected " << wanted.size() << " proteins, loaded "
+              << name_seq->size() << std::endl;
+}
+template void LoadSelected(const std::set<std::string> &, const std::string &, std::unordered_map<std::string, std::string> *,
+                           std::unordered_map<std::string, std::string> *);
+template void LoadSelected(const std::unordered_set<std::string_view> &, const std::string &,
+                           std::unordered_map<std::string, std::string> *, std::unordered_map<std::string, std::string> *);
+
 void RebuildDtabaseMaxQuant(const std::set<std::string> &protein_names, const std::unordered_map<std::string, std::string> &name_seq, const std::unordered_map<std::string, std::string> &name_full_name, const std::string &out_path) {
     FILE * refined_file = OpenFileWrite(out_path);
     setvbuf ( refined_file , NULL , _IOFBF , 1024000 );
@@ -125,8 +175,10 @@ void DBReducer(const std::string &protein_path, const std::string &fasta_path, c
     std::set<std::string> protein_names;
     std::unordered_map<std::string, std::string> name_seq;
     std::unordered_map<std::string, std::string> name_full_name;
-    BuildDict(&name_seq, fasta_path, &name_full_name); // 将原始数据库存成dict形式
     ReadProteinName(&protein_names, protein_path, threshold); // 读取被鉴定到的蛋白质
+    // D9：原先先 BuildDict 把整个原始库读进内存，现在只读入被鉴定到的蛋白（输出按名字排序，与库的顺序无关）
+    LoadSelected(protein_names, fasta_path, &name_seq, &name_full_name);
+    dbr::StatusPhase("write");
     if (maxquant_flag) // 如果下游是maxquant，则需要重命名CON
         RebuildDtabaseMaxQuant(protein_names, name_seq, name_full_name, out_path);
     else

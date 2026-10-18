@@ -1,6 +1,7 @@
 #include "Param.hpp"
 #include <typeinfo>
 #include <iostream>
+#include <algorithm>
 #include "../utils/IOUtil.h"
 #include "../utils/StringUtil.h"
 #define VNAME(value) (#value)
@@ -85,6 +86,12 @@ void Params::LoadParam(const std::string &cfgpath) {
             this->msmspaths.emplace_back(value);
         else if (key == "msmstype")
 			this->msmstype = value;
+        else if (key == "resume")
+            this->resume = std::stoi(value) == 1 ? 1 : 0;
+        else if (key == "stall_timeout_min")
+            this->stall_timeout_min = std::max(0.0, std::stod(value));
+        else if (key == "heartbeat_sec")
+            this->heartbeat_sec = std::max(1, std::stoi(value));
 		else
 			printf("Invalid param!  : %s\n", linestr.c_str());
     }

@@ -8,31 +8,37 @@ class Params {
 public:
     virtual ~Params(){};
     Params(){};
-    int tTagLen; // tag长度
-    std::string selectmod; 
+    // 2026-10：原先 tTagLen/isMaxQuant/multip/thread/maxspec/maxprolen/msmsnum 没有初始值，
+    // cfg 缺这些键时会把随机值写进 pFind.cfg；现统一给默认值（取 PFindParams 的默认）。
+    int tTagLen = 5; // tag长度（不会传给 pFind）
+    std::string selectmod;
     std::string fixmod;
-    bool isMaxQuant; // 衔接的搜索引擎是否为Maxquant
+    bool isMaxQuant = false; // 衔接的搜索引擎是否为Maxquant
     std::string ProteinDatabase; // 原始数据库路径
     std::string SearchRes; // pFind输出结果路径
     std::string RefinedPath; // pFind输出结果路径
     double threshold = 0.01; // 谱图/肽段层次的FDR限制
-    int len_upper = 6;
-    int len_lower = 100;
+    int len_upper = 100; // 原先与 len_lower 的默认值写反了（6 / 100）
+    int len_lower = 6;
     double mstol = 20; // 母离子误差
     double msmstol = 20; // 碎片离子误差
     int mstolppm = 1; // 母离子误差类型，1：ppm，0：Da
     int msmstolppm = 1; // 碎片离子误差类型，1：ppm，0：Da
-    int multip; // 进程数
-    int thread; // 谱图线程数
-    long long maxspec; // 每轮处理的谱图数
+    int multip = 1; // 进程数
+    int thread = 2; // 谱图线程数
+    long long maxspec = 10000; // 每轮处理的谱图数
     int output_pro_info = 1; // 需指定，1表示运行pFind的蛋白质推断模块，并由此生成fasta文件
     std::string train_data = ""; // 扩充训练集的路径
-    long long maxprolen; // 一次读入的蛋白质总长度
+    long long maxprolen = 60000000; // 一次读入的蛋白质总长度
     std::string activation_type; // 高低精度数据区分
     std::string enzyme; // 酶切类型
     int digest = 3; // 酶切类型
     int max_clv_sites = 3; // 最大遗漏酶切位点数
-    int msmsnum; // 数据集数量
+    int msmsnum = 0; // 数据集数量
+    // ---- 2026-10 新增（运行状态与容错，见 docs/status-interface.md） ----
+    int resume = 0;                 // 1：让 pFind 跳过已有 qry.res 的谱图文件（文件级续跑），并先清掉写了一半的
+    double stall_timeout_min = 0;   // >0：输出目录连续这么多分钟无文件更新就终止 pFind（可写小数）；0 关闭
+    int heartbeat_sec = 300;        // 心跳与状态文件刷新间隔（秒）
     int msmsfolder = 0; // 文件夹数量
     int mass_lower = 0;
     int mass_upper = 0;

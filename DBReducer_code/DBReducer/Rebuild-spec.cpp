@@ -21,6 +21,7 @@
 #include "../utils/StringUtil.h"
 #include "Rebuild-spec.hpp"
 #include "Rebuild.hpp"
+#include "Status.hpp"
 #include <functional>
 
 
@@ -120,17 +121,47 @@ void StoreProbyLine(const std::deque<RawRes> &lines, std::deque<Protein> *pros) 
  * @param lines 存储RawRes的容器
  * @param threshold q-value阈值
  */
+/// .spectra 一行的解析结果
+enum class SpecLine { ok, no_psm, bad };
+
+/// 解析 .spectra 一行的 Q-value 列（segs[4]）。
+/// 2026-10：原先不检查就访问 segs[4]/segs[12]，读到空行、残缺行时越界（实测基线在此 bad_alloc 崩溃）。
+///  - ok：列数足够，*q 有效
+///  - no_psm：Q 值能解析但列数不足——pFind 对没有鉴定结果的谱图只写 6 列（Q=1024），属正常输出
+///  - bad：连 Q 值都解析不了，才是真正的残缺行
+static SpecLine ParseSpectraQ(const std::vector<std::string> &segs, size_t min_cols, float *q) {
+    if (segs.size() < 5) return SpecLine::bad;
+    try {
+        *q = std::stof(segs[4]);
+    } catch (const std::exception &) {
+        return SpecLine::bad;
+    }
+    return segs.size() < min_cols ? SpecLine::no_psm : SpecLine::ok;
+}
+
+static void WarnBadSpectraLines(const std::string &func, long long bad) {
+    if (bad > 0)
+        dbr::Warn("spectra_bad_lines", "count=" + std::to_string(bad) + " in=" + func);
+}
+
 void ReadRawResbySpec(const std::string &file_name, std::deque<RawRes> *lines, double threshold) {
     std::ifstream buffer = ReadFilebyStream(file_name);
     std::string linestr= "";
     getline(buffer, linestr); // 过滤掉title行
-    while (!buffer.eof()) { 
+    long long bad = 0;
+    while (!buffer.eof()) {
         getline(buffer, linestr);// 按行读取缓冲区内容
+        if (linestr.empty() || linestr == "\r") continue;
         auto segs = SplitRule(linestr, "\t");
-        if (std::stof(segs[4]) > threshold)
+        float q = 0;
+        SpecLine st = ParseSpectraQ(segs, 13, &q);
+        if (st == SpecLine::bad) { ++bad; continue; }
+        if (q > threshold)
             break;
+        if (st == SpecLine::no_psm) continue;
         lines->emplace_back(RawRes(segs[12], segs[5]));
     }
+    WarnBadSpectraLines("ReadRawResbySpec", bad);
 }
 
 /**
@@ -145,15 +176,22 @@ void ReadCredibleMS2(const std::string &file_name, std::unordered_set<std::strin
     std::string linestr= "";
     getline(buffer, linestr); // 过滤掉title行
     int cnt = 0;
+    long long bad = 0;
     while (!buffer.eof()) {
         getline(buffer, linestr);// 按行读取缓冲区内容
+        if (linestr.empty() || linestr == "\r") continue;
         auto segs = SplitRule(linestr, "\t");
-        if (std::stof(segs[4]) > threshold) {
+        float q = 0;
+        SpecLine st = ParseSpectraQ(segs, 13, &q);
+        if (st == SpecLine::bad) { ++bad; continue; }
+        if (q > threshold) {
             break;
         }
+        if (st == SpecLine::no_psm) continue;
         MS2s->insert(segs[0]);
         cnt++;
     }
+    WarnBadSpectraLines("ReadCredibleMS2", bad);
     std::cout << "Credible MS2s: " << cnt << std::endl;
 }
 
@@ -312,6 +350,7 @@ void GroupPros(std::deque<Protein> *pros) {
  * @param name_seq key = pro name, value = pro seq
  */
 void ReduceDB(const std::string &output_path, const std::deque<Protein> &pros, const std::unordered_map<std::string, std::string> &name_seq, const std::unordered_map<std::string, std::string> &name_full_name) {
+    dbr::StatusPhase("write");
     FILE *out_file = OpenFileWrite(output_path); // 打开输出文件
     setvbuf(out_file, NULL, _IOFBF, g_out_buffer_size); // 设置缓冲区
     for (auto pro = pros.begin(); pro != pros.end(); pro++) {
