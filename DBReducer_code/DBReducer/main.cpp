@@ -12,11 +12,13 @@
  *          各 option 的业务逻辑（读修饰、写 pFind.cfg、调哪个缩库函数）与原来相同。
  */
 #include <iostream>
+#ifdef _WIN32
 #include <windows.h>
+#include <direct.h>
+#endif
 #include <string>
 #include <vector>
 #include <stdlib.h>
-#include <direct.h>
 #include <sstream>
 #include <stdio.h>
 #include <deque>
@@ -24,6 +26,7 @@
 #include <algorithm>
 #include "../utils/IOUtil.h"
 #include "../utils/StringUtil.h"
+#include "../utils/Platform.h"
 #include "Param.hpp"
 #include "Rebuild.hpp"
 #include "Rebuild-spec.hpp"
@@ -41,12 +44,15 @@ using dbr::DbrError;
 using dbr::Result;
 using dbr::AnsiToUtf8;
 
-long long FileSize(const std::string &path) {
-	WIN32_FILE_ATTRIBUTE_DATA d;
-	if (!GetFileAttributesExA(path.c_str(), GetFileExInfoStandard, &d)) return -1;
-	if (d.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) return -1;
-	return ((long long)d.nFileSizeHigh << 32) | d.nFileSizeLow;
-}
+// 文件大小 / 当前时间（FILETIME 单位）：两个平台的实现在 utils/Platform.h
+using plat::FileSize;
+using plat::NowFileTime;
+
+#ifdef _WIN32
+#define SYS_ERR "Windows 错误码"
+#else
+#define SYS_ERR "系统错误码"
+#endif
 
 std::string Lower(std::string s) {
 	std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) { return (char)std::tolower(c); });
@@ -78,15 +84,13 @@ std::string Fmt(const char *fmt, double v) {
 /// 本次运行里 pFind 搜库的耗时（秒）；-1 表示本次没有搜库（option 1/2/3）
 long long g_search_sec = -1;
 
-unsigned long long NowFileTime() {
-	FILETIME ft;
-	GetSystemTimeAsFileTime(&ft);
-	return ((unsigned long long)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
-}
-
 void MakeDir(const std::string &dir) {
 	if (0 != access(dir.c_str(), 0)) {
+#ifdef _WIN32
 		if (mkdir(dir.c_str()) == -1) {
+#else
+		if (mkdir(dir.c_str(), 0777) == -1) {
+#endif
 			cout << "Path: " << dir << endl;
 			printf("Build Folder failed!\n");
 			throw DbrError(Result::param_error, "无法创建输出目录：" + AnsiToUtf8(dir), "check_input");
@@ -103,25 +107,20 @@ struct DirScan {
 };
 
 void ScanDir(const std::string &dir, int depth, unsigned long long qry_since, DirScan *s) {
-	WIN32_FIND_DATAA fd;
-	HANDLE h = FindFirstFileA((dir + "\\*").c_str(), &fd);
-	if (h == INVALID_HANDLE_VALUE) return;
-	do {
-		std::string n = fd.cFileName;
-		if (n == "." || n == "..") continue;
-		if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-			if (depth > 0) ScanDir(dir + "\\" + n, depth - 1, qry_since, s);
+	for (const auto &e : plat::ListDir(dir)) {
+		const std::string &n = e.name;
+		if (e.is_dir) {
+			if (depth > 0) ScanDir(dir + PSEP + n, depth - 1, qry_since, s);
 			continue;
 		}
 		if (Lower(n).rfind("dbr_status.json", 0) == 0) continue;   // 自己写的状态文件不算 pFind 的产出
-		unsigned long long ft = ((unsigned long long)fd.ftLastWriteTime.dwHighDateTime << 32) | fd.ftLastWriteTime.dwLowDateTime;
+		const unsigned long long ft = e.mtime;
 		if (ft > s->newest_ft) {
 			s->newest_ft = ft;
 			s->newest = n;
 		}
 		if (EndsWithI(n, ".qry.res") && ft >= qry_since) s->qry++;
-	} while (FindNextFileA(h, &fd));
-	FindClose(h);
+	}
 }
 
 /// 谱图文件列表：msmsfolder>0 时 msmspath 是目录，取其中扩展名与 msmstype 相同的文件；否则 msmspath 就是文件
@@ -134,14 +133,8 @@ std::vector<std::string> ListMsFiles(const Params &p) {
 	const std::string ext = "." + Lower(p.msmstype);
 	for (const auto &raw : p.msmspaths) {
 		std::string d = StripSlash(raw);
-		WIN32_FIND_DATAA fd;
-		HANDLE h = FindFirstFileA((d + "\\*").c_str(), &fd);
-		if (h == INVALID_HANDLE_VALUE) continue;
-		do {
-			if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && EndsWithI(fd.cFileName, ext))
-				files.push_back(d + "\\" + fd.cFileName);
-		} while (FindNextFileA(h, &fd));
-		FindClose(h);
+		for (const auto &e : plat::ListDir(d))
+			if (!e.is_dir && EndsWithI(e.name, ext)) files.push_back(d + PSEP + e.name);
 	}
 	return files;
 }
@@ -157,7 +150,7 @@ bool EndsWithNewline(const std::string &path) {
 	FILE *fp = fopen(path.c_str(), "rb");
 	if (!fp) return false;
 	bool ok = false;
-	if (_fseeki64(fp, -1, SEEK_END) == 0) ok = (fgetc(fp) == '\n');
+	if (plat::Seek64(fp, -1, SEEK_END) == 0) ok = (fgetc(fp) == '\n');
 	fclose(fp);
 	return ok;
 }
@@ -170,27 +163,22 @@ void PrepareSearchDir(const Params &p) {
 	const std::string dir = StripSlash(p.SearchRes);
 	int skip = 0, removed = 0, removed_complete = 0;
 	std::string removed_names;
-	WIN32_FIND_DATAA fd;
-	HANDLE h = FindFirstFileA((dir + "\\*").c_str(), &fd);
-	if (h != INVALID_HANDLE_VALUE) {
-		do {
-			if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) continue;
-			const std::string n = fd.cFileName;
-			const std::string full = dir + "\\" + n;
-			if (EndsWithI(n, ".complete")) {
-				if (DeleteFileA(full.c_str())) ++removed_complete;
-			} else if (p.resume == 1 && EndsWithI(n, ".qry.res")) {
-				if (!EndsWithNewline(full)) {
-					if (DeleteFileA(full.c_str())) {
-						++removed;
-						removed_names += (removed_names.empty() ? "" : ",") + Ascii(n);
-					}
-				} else {
-					++skip;
+	for (const auto &e : plat::ListDir(dir)) {
+		if (e.is_dir) continue;
+		const std::string &n = e.name;
+		const std::string full = dir + PSEP + n;
+		if (EndsWithI(n, ".complete")) {
+			if (plat::RemoveFile(full)) ++removed_complete;
+		} else if (p.resume == 1 && EndsWithI(n, ".qry.res")) {
+			if (!EndsWithNewline(full)) {
+				if (plat::RemoveFile(full)) {
+					++removed;
+					removed_names += (removed_names.empty() ? "" : ",") + Ascii(n);
 				}
+			} else {
+				++skip;
 			}
-		} while (FindNextFileA(h, &fd));
-		FindClose(h);
+		}
 	}
 	if (removed_complete > 0) dbr::Log("CLEANUP", "removed_complete=" + std::to_string(removed_complete));
 	if (p.resume == 1) {
@@ -232,16 +220,16 @@ void Precheck(const Params &param) {
 void RunSearcher(const Params &param, const std::string &pFind_path, const std::string &cfg) {
 	dbr::StatusPhase("search");
 	procguard::Options o;
-	o.exe_path = pFind_path + "\\Searcher.exe";
+	o.exe_path = pFind_path + PSEP "Searcher" EXE;
 	if (FileSize(o.exe_path) < 0)
-		throw DbrError(Result::param_error, "找不到 pFind 的 Searcher.exe：" + AnsiToUtf8(o.exe_path), "check_pfind");
+		throw DbrError(Result::param_error, "找不到 pFind 的 Searcher" EXE "：" + AnsiToUtf8(o.exe_path), "check_pfind");
 	PrepareSearchDir(param);
 	// resume=1 时末尾加 " 1"：Searcher 会原样传给 SearchEngine，后者跳过已有 qry.res 的谱图文件
 	o.args = "\"" + cfg + "\"" + (param.resume == 1 ? " 1" : "");
 	o.work_dir = pFind_path;
-	o.fatal_children = {"tagsearcher.exe", "searchengine.exe", "pssearcher.exe", "reranker.exe", "group.exe"};
+	o.fatal_children = {"tagsearcher" EXE, "searchengine" EXE, "pssearcher" EXE, "reranker" EXE, "group" EXE};
 	o.tick_ms = 1000;
-	printf("Searcher.exe %s\n", o.args.c_str());
+	printf("Searcher" EXE " %s\n", o.args.c_str());
 	fflush(stdout);
 
 	const std::string dir = StripSlash(param.SearchRes);
@@ -257,14 +245,14 @@ void RunSearcher(const Params &param, const std::string &pFind_path, const std::
 
 	unsigned long long newest_ft = search_start_ft;
 	std::string newest_name;
-	unsigned long long last_hb = GetTickCount64(), last_scan = 0;
+	unsigned long long last_hb = plat::TickMs(), last_scan = 0;
 	long long stalled_age = -1, stalled_cpu_idle = -1;
 	// 停滞 = 输出目录无文件更新 且 整棵进程树 CPU 几乎不增长，两者都持续 stall_sec。
 	// 只看文件会误判：ReRanker 等阶段可以满负荷计算很久不写文件
 	// 结算窗口取阈值的 1/4（1–10 秒）：满负荷的进程被计为空闲的时长不会超过一个窗口
 	const unsigned cpu_window_ms =
 	    (unsigned)std::min(10000.0, std::max(1000.0, stall_sec > 0 ? stall_sec * 1000 / 4 : 10000.0));
-	procguard::CpuActivity cpu(GetTickCount64(), cpu_window_ms);
+	procguard::CpuActivity cpu(plat::TickMs(), cpu_window_ms);
 
 	auto make_progress = [&](int qry_done, long long age) {
 		dbr::Progress pr;
@@ -282,7 +270,7 @@ void RunSearcher(const Params &param, const std::string &pFind_path, const std::
 	}
 
 	o.on_tick = [&](const procguard::TickInfo &ti) -> bool {
-		const unsigned long long now = GetTickCount64();
+		const unsigned long long now = plat::TickMs();
 		cpu.Feed(ti, now);
 		const bool hb_due = now - last_hb >= hb_ms;
 		if (!hb_due && now - last_scan < scan_ms) return false;
@@ -319,9 +307,9 @@ void RunSearcher(const Params &param, const std::string &pFind_path, const std::
 		                            " proc_exit=" + dbr::Hex8(c.exit_code));
 	};
 
-	const unsigned long long search_start_tick = GetTickCount64();
+	const unsigned long long search_start_tick = plat::TickMs();
 	procguard::Result r = procguard::Run(o);
-	g_search_sec = (long long)((GetTickCount64() - search_start_tick) / 1000ULL);
+	g_search_sec = (long long)((plat::TickMs() - search_start_tick) / 1000ULL);
 	if (!r.job_ok) dbr::Warn("job_unavailable");
 	{
 		// 结束时再扫一次：心跳之间写出的 qry.res 也要算进最终进度
@@ -337,7 +325,7 @@ void RunSearcher(const Params &param, const std::string &pFind_path, const std::
 	switch (r.outcome) {
 		case procguard::Outcome::LaunchFailed:
 			throw DbrError(Result::pfind_failed,
-			               "无法启动 Searcher.exe（Windows 错误码 " + std::to_string(r.launch_error) + "）", "check_pfind");
+			               "无法启动 Searcher" EXE "（" SYS_ERR " " + std::to_string(r.launch_error) + "）", "check_pfind");
 		case procguard::Outcome::Aborted: {
 			char b[400];
 			if (stalled_cpu_idle >= 0)
@@ -358,18 +346,18 @@ void RunSearcher(const Params &param, const std::string &pFind_path, const std::
 			pi.pid = r.failed.pid;
 			pi.exit_code = r.failed.exit_code;
 			std::string detail = "pFind 子进程 " + r.failed.name + " 异常退出（退出码 " + dbr::Hex8(r.failed.exit_code) + "）";
-			if (r.failed.exit_code == 3) detail += "，可能是内存不足，也可能是程序内部错误";
+			if (procguard::IsAbortExit(r.failed.exit_code)) detail += "，可能是内存不足，也可能是程序内部错误";
 			detail += "，已终止整个 pFind 进程树";
-			throw DbrError(Result::worker_crashed, detail, r.failed.exit_code == 3 ? "abort_reduce_multip" : "see_pfind_log", pi);
+			throw DbrError(Result::worker_crashed, detail, procguard::IsAbortExit(r.failed.exit_code) ? "abort_reduce_multip" : "see_pfind_log", pi);
 		}
 		case procguard::Outcome::Finished:
 			if (r.main_exit_code != 0) {
 				dbr::ProcInfo pi;
 				pi.valid = true;
-				pi.name = "Searcher.exe";
+				pi.name = "Searcher" EXE;
 				pi.pid = r.main_pid;
 				pi.exit_code = r.main_exit_code;
-				throw DbrError(Result::pfind_failed, "pFind 主进程 Searcher.exe 返回非 0（" + dbr::Hex8(r.main_exit_code) + "）",
+				throw DbrError(Result::pfind_failed, "pFind 主进程 Searcher" EXE " 返回非 0（" + dbr::Hex8(r.main_exit_code) + "）",
 				               "see_pfind_log", pi);
 			}
 			break;
@@ -377,11 +365,9 @@ void RunSearcher(const Params &param, const std::string &pFind_path, const std::
 }
 
 bool AnyQryRes(const std::string &dir) {
-	WIN32_FIND_DATAA fd;
-	HANDLE h = FindFirstFileA((StripSlash(dir) + "\\*.qry.res").c_str(), &fd);
-	if (h == INVALID_HANDLE_VALUE) return false;
-	FindClose(h);
-	return true;
+	for (const auto &e : plat::ListDir(StripSlash(dir)))
+		if (EndsWithI(e.name, ".qry.res")) return true;
+	return false;
 }
 
 /// pFind 结果文件必须存在且非 0 字节，否则是故障（14）。
@@ -459,7 +445,7 @@ bool ReduceByProtein(const Params &param) {
 /// full_dict=true（仅 option 3）：整库读进 name_seq，留给后面的 top2 扫全库；否则只读入要写出的蛋白（D9）。
 bool ReduceBySpectra(const Params &param, std::unordered_map<std::string, std::string> *name_seq, bool full_dict) {
 	dbr::StatusPhase("verify_search");
-	const std::string spectra = param.SearchRes + "\\pFind.spectra";
+	const std::string spectra = param.SearchRes + PSEP "pFind.spectra";
 	if (!RequireDataLines(spectra, "pFind.spectra", 1, param)) {
 		dbr::StatusPhase("write");
 		NoHits(param, "header_only");
@@ -498,12 +484,11 @@ void CheckBuildDictMemory(const Params &param, long long db_bytes, int option) {
 		return;
 	}
 	if (db_bytes <= 0) return;
-	MEMORYSTATUSEX ms;
-	ms.dwLength = sizeof(ms);
-	if (!GlobalMemoryStatusEx(&ms)) return;
+	const unsigned long long avail_bytes = plat::AvailCommitBytes();
+	if (avail_bytes == 0) return;
 	const double gb = 1024.0 * 1024 * 1024;
 	const double est = db_bytes * 4.5 / gb;
-	const double avail = ms.ullAvailPageFile / gb;
+	const double avail = avail_bytes / gb;
 	printf("BuildDict memory estimate: %.1f GB (db %.2f GB x 4.5, estimated), commit available %.1f GB\n", est,
 	       db_bytes / gb, avail);
 	dbr::StatusBuildDict(est, avail, est > avail);
@@ -536,9 +521,9 @@ int Run(int argc, char **argv) {
 	auto start = std::chrono::system_clock::now();
 	std::string now = getcwd(NULL, 0);
 	auto pos = now.find_last_of("/\\");
-	std::string pFind_path = now.substr(0, pos) + "\\pFind3\\bin";
+	std::string pFind_path = now.substr(0, pos) + PSEP "pFind3" PSEP "bin";
 	std::cout << now << std::endl;
-	std::string cfgpath = now + "\\DBReducer.cfg";
+	std::string cfgpath = now + PSEP "DBReducer.cfg";
 	int option = 0;
 	if (argc > 1) {
 		cfgpath = argv[1];
@@ -558,7 +543,7 @@ int Run(int argc, char **argv) {
 	} catch (const std::exception &e) {
 		throw DbrError(Result::param_error, std::string("cfg 中有无法解析的参数值（") + e.what() + "）", "check_input");
 	}
-	param.RefinedPath = param.SearchRes + "\\DBReducer.fasta"; // 直接写死输出文件的路径
+	param.RefinedPath = param.SearchRes + PSEP "DBReducer.fasta"; // 直接写死输出文件的路径
 
 	dbr::StatusInit(param.SearchRes, option, param.heartbeat_sec);
 	const long long db_bytes = FileSize(param.ProteinDatabase);
@@ -568,7 +553,7 @@ int Run(int argc, char **argv) {
 		size_t p = stage.find_last_of("\\/");
 		if (p != std::string::npos) stage = stage.substr(p + 1);
 		dbr::Log("START", "stage=" + Ascii(stage) + " option=" + std::to_string(option) +
-		                      " pid=" + std::to_string(GetCurrentProcessId()) + " db_bytes=" + std::to_string(db_bytes) +
+		                      " pid=" + std::to_string(plat::Pid()) + " db_bytes=" + std::to_string(db_bytes) +
 		                      " multip=" + std::to_string(param.multip) + " thread=" + std::to_string(param.thread) +
 		                      " maxprolen=" + std::to_string(param.maxprolen) + " maxspec=" + std::to_string(param.maxspec) +
 		                      " resume=" + std::to_string(param.resume) +
@@ -586,11 +571,11 @@ int Run(int argc, char **argv) {
 		std::unordered_set<std::string> mods; // 总体要考虑的修饰
 		ReadMod(param, &mods);
 		// 判断路径下是否存在modification.ini文件
-		if (0 != access((pFind_path + "\\modification.ini").c_str(), 0)) {
+		if (0 != access((pFind_path + PSEP "modification.ini").c_str(), 0)) {
 			// 原逻辑在这里调 WriteMod 后 return 0；但 WriteMod 读的正是这个不存在的文件，实际以 1 退出
 			throw DbrError(Result::param_error, "pFind 目录下缺少 modification.ini：" + AnsiToUtf8(pFind_path), "check_pfind");
 		}
-		std::string pFind_cfg_path = param.SearchRes + "\\pFind.cfg";
+		std::string pFind_cfg_path = param.SearchRes + PSEP "pFind.cfg";
 		std::cout << pFind_cfg_path << std::endl;
 		pFind_params.Write(pFind_cfg_path); // 写出pFind.cfg文件
 		Precheck(param);
@@ -620,28 +605,28 @@ int Run(int argc, char **argv) {
 		}
 		//读取所有经过过滤的spectra
 		std::unordered_set<std::string> MS2s;
-		ReduSpec::ReadCredibleMS2(param.SearchRes + "\\pFind.spectra", &MS2s, param.threshold);
+		ReduSpec::ReadCredibleMS2(param.SearchRes + PSEP "pFind.spectra", &MS2s, param.threshold);
 		std::cout << "MS2s size: " << MS2s.size() << std::endl;
 		//读取所有top2肽段
 		std::vector<std::string> top2seqs;
 		ReduSpec::ReadTop2Seq(param.SearchRes, MS2s, &top2seqs);
 		//写出所有top2肽段
-		auto out_file = OpenFileWrite(param.SearchRes + "\\top2.pep");
+		auto out_file = OpenFileWrite(param.SearchRes + PSEP "top2.pep");
 		for (auto seq : top2seqs) {
 			fwrite(seq.c_str(), seq.length(), 1, out_file);
 			fwrite("\n", 1, 1, out_file);
 		}
 		fclose(out_file);
 		//根据top2肽段建库
-		ReduSpec::GetTop2Fasta(name_seq, top2seqs, param.SearchRes + "\\top2.fasta");
+		ReduSpec::GetTop2Fasta(name_seq, top2seqs, param.SearchRes + PSEP "top2.fasta");
 	}
 	else {
 		MakeDir(param.SearchRes);
 		PFindParams pFind_params(param); // 加载pFind参数
 		std::unordered_set<std::string> mods; // 总体要考虑的修饰
 		ReadMod(param, &mods);
-		WriteMod(pFind_path + "\\modification.ini", mods, pFind_params.modpath); // 写出要考虑的修饰
-		std::string pFind_cfg_path = param.SearchRes + "\\pFind.cfg";
+		WriteMod(pFind_path + PSEP "modification.ini", mods, pFind_params.modpath); // 写出要考虑的修饰
+		std::string pFind_cfg_path = param.SearchRes + PSEP "pFind.cfg";
 		std::cout << pFind_cfg_path << std::endl;
 		pFind_params.Write(pFind_cfg_path); // 写出pFind.cfg文件
 		Precheck(param);

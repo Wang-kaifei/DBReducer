@@ -2,12 +2,7 @@
  * @file Precheck.cpp
  * @brief 见 Precheck.hpp。
  */
-#ifndef _WIN32_WINNT
-#define _WIN32_WINNT 0x0601
-#endif
-#define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#include "../utils/Platform.h"
 
 #include "Precheck.hpp"
 
@@ -28,9 +23,9 @@ const double kBytesPerSpectrum = 60.0 * 1024;  // 谱图侧上限
 const double kGB = 1024.0 * 1024 * 1024;
 
 long long FileBytes(const std::string &path) {
-    WIN32_FILE_ATTRIBUTE_DATA fa;
-    if (!GetFileAttributesExA(path.c_str(), GetFileExInfoStandard, &fa)) return -1;
-    return ((long long)fa.nFileSizeHigh << 32) | fa.nFileSizeLow;
+    plat::Entry e;
+    if (!plat::Stat(path, &e)) return -1;
+    return e.is_dir ? 0 : e.size;   // 原先用 GetFileAttributesEx，目录的大小是 0
 }
 
 /// 统计以 marker 开头的行数，按文件大小外推。失败返回 -1。
@@ -48,7 +43,7 @@ long long EstimateLinesStartingWith(const std::string &path, const char *marker)
     for (int s = 0; s < kSegments; ++s) {
         const long long off = size <= kMsSampleBytes ? (long long)s * seg_bytes : size / kSegments * s;
         if (off >= size) break;
-        if (_fseeki64(fp, off, SEEK_SET) != 0) break;
+        if (plat::Seek64(fp, off, SEEK_SET) != 0) break;
         size_t n = fread(buf.data(), 1, buf.size(), fp);
         if (n == 0) break;
         // 段起点不在文件开头时，从下一个行首开始数
@@ -137,10 +132,9 @@ PrecheckResult RunPrecheck(const std::string &fasta_path, long long maxprolen, l
     r.spectra_batch = r.spectra_per_file_est >= 0 ? std::min(ms, r.spectra_per_file_est) : ms;
 
     // ---- 可提交余额 ----
-    MEMORYSTATUSEX mst;
-    mst.dwLength = sizeof(mst);
-    if (!GlobalMemoryStatusEx(&mst)) return r;
-    r.commit_avail_gb = mst.ullAvailPageFile / kGB;
+    const unsigned long long avail = plat::AvailCommitBytes();
+    if (avail == 0) return r;
+    r.commit_avail_gb = avail / kGB;
 
     // ---- 估算 ----
     const long long batch_aa = maxprolen > 0 ? std::min(maxprolen, r.aa_est) : r.aa_est;

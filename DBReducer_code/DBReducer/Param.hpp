@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "../utils/Platform.h"
 
 class Params {
 public:
@@ -71,7 +72,7 @@ public:
         if (DBRparam.search_mode != -1) { // 用户指定搜索模式
             open = DBRparam.search_mode;
         }
-        modpath = DBRparam.SearchRes + "\\modification.ini";
+        modpath = DBRparam.SearchRes + PSEP "modification.ini";
         fastapath = DBRparam.ProteinDatabase;
         outputpath = DBRparam.SearchRes;
         msmsnum = DBRparam.msmsnum;

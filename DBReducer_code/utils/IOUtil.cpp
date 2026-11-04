@@ -9,6 +9,7 @@
  * 
  */
 #include "IOUtil.h"
+#include "Platform.h"
 #include <dirent.h>
 #include <iostream>
 #include <memory.h>
@@ -47,32 +48,22 @@ char *ReadFullFile(const std::string & filename, long *flen) {
 std::vector<std::string> getFilesList(const std::string &dirpath) {
 	std::cout << "OPEN: " << dirpath << std::endl;
 	std::vector<std::string> allPath;
-	struct stat pre_test;
-	if (stat(dirpath.c_str(), &pre_test) == 0) { // 如果本身就是文件，直接返回
-		if (pre_test.st_mode & S_IFREG) {
-			allPath.emplace_back(dirpath);
-			return allPath;
-		}
+	plat::Entry self;
+	if (plat::Stat(dirpath, &self) && !self.is_dir) { // 如果本身就是文件，直接返回
+		allPath.emplace_back(dirpath);
+		return allPath;
 	}
-	DIR *dir = opendir(dirpath.c_str());
-	struct dirent *entry = readdir(dir);
-	while ((entry = readdir(dir)) != NULL) // 读取成功则返回下一个目录点
-	{
-		struct stat s;
-		stat(entry->d_name, &s);
-		if (s.st_mode & S_IFDIR) { // 如果是文件夹
-			if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
-				continue;
-			std::string dirNew = dirpath + "\\" + entry->d_name;
-			std::vector<std::string> tempPath = getFilesList(dirNew);
+	// 2026-11（Linux 移植，与 pAnno 仓库 utils 同步）：原先先 readdir 一次再进循环（丢掉第一个条目，Windows 上恰好总是 "."），
+	// 判断子目录时 stat 只传文件名（相对当前目录）。Linux 上 readdir 无序，会丢掉真实文件；改用 plat::ListDir。
+	for (const auto &e : plat::ListDir(dirpath)) {
+		const std::string p = dirpath + PSEP + e.name;
+		if (e.is_dir) { // 如果是文件夹
+			std::vector<std::string> tempPath = getFilesList(p);
 			allPath.insert(allPath.end(), tempPath.begin(), tempPath.end());
 		}
 		else { // 如果是文件
-			std::string name = entry->d_name;
-			std::string imgdir = dirpath + "\\" + name;
-			allPath.push_back(imgdir);
+			allPath.push_back(p);
 		}
 	}
-	closedir(dir);
 	return allPath;
 }

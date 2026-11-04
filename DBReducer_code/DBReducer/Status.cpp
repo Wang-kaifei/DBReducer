@@ -2,12 +2,17 @@
  * @file Status.cpp
  * @brief 见 Status.hpp。
  */
+#ifdef _WIN32
 #ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0601
 #endif
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#else
+#include <ctime>
+#endif
+#include "../utils/Platform.h"
 
 #include "Status.hpp"
 
@@ -65,7 +70,7 @@ const char *SuggestionText(const std::string &code) {
     if (code == "reduce_maxprolen") return "单个进程的蛋白分批过大，建议降低 maxprolen";
     if (code == "reduce_maxspec") return "单个进程的谱图批次过大，建议降低 maxspec";
     if (code == "check_input") return "请检查 cfg 中的路径与输入文件是否存在";
-    if (code == "check_pfind") return "请检查 pFind 安装是否完整（thirdparty\\pFind3\\bin）";
+    if (code == "check_pfind") return "请检查 pFind 安装是否完整（thirdparty" PSEP "pFind3" PSEP "bin）";
     if (code == "rerun_resume") return "可设置 resume=1 后重跑，已完成的文件会被跳过";
     if (code == "see_pfind_log") return "请查看 SearchRes 下 pFind 的日志定位原因";
     if (code == "free_memory") return "DBReducer 读取原始库时内存不足，请关闭其他占用内存的程序或换用内存更大的机器";
@@ -126,7 +131,7 @@ std::string BuildJson() {
     field("schema_version", "1");
     field("tool", JsonStr("DBReducer"));
     field("tool_build", JsonStr(DBR_BUILD));
-    field("pid", Num(GetCurrentProcessId()));
+    field("pid", Num(plat::Pid()));
     field("result", JsonStr(ResultName(g.result)));
     field("exit_code", g.exit_code < 0 ? "null" : Num(g.exit_code));
     field("stage", JsonStr(g.stage));
@@ -206,11 +211,11 @@ void WriteStatus() {
     fwrite(json.data(), 1, json.size(), fp);
     fclose(fp);
     for (int i = 0; i < 3; ++i) {
-        if (MoveFileExA(tmp.c_str(), g.status_path.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
+        if (plat::ReplaceFile(tmp, g.status_path))
             return;
-        Sleep(200);   // 读取方正好打开着文件
+        plat::SleepMs(200);   // 读取方正好打开着文件（Windows）
     }
-    DeleteFileA(tmp.c_str());
+    plat::RemoveFile(tmp);
 }
 
 }  // namespace
@@ -248,6 +253,9 @@ int ResultExitCode(Result r) {
 }
 
 std::string AnsiToUtf8(const std::string &ansi) {
+#ifndef _WIN32
+    return ansi;   // Linux 上文件名、cfg 都按 UTF-8，不用转
+#else
     if (ansi.empty()) return ansi;
     int wn = MultiByteToWideChar(CP_ACP, 0, ansi.data(), (int)ansi.size(), nullptr, 0);
     if (wn <= 0) return ansi;
@@ -258,9 +266,11 @@ std::string AnsiToUtf8(const std::string &ansi) {
     std::string u(un, '\0');
     WideCharToMultiByte(CP_UTF8, 0, w.data(), wn, &u[0], un, nullptr, nullptr);
     return u;
+#endif
 }
 
 namespace {
+#ifdef _WIN32
 std::string FormatLocal(const SYSTEMTIME &st) {
     TIME_ZONE_INFORMATION tz;
     DWORD r = GetTimeZoneInformation(&tz);
@@ -275,22 +285,44 @@ std::string FormatLocal(const SYSTEMTIME &st) {
              st.wMinute, st.wSecond, sign, off / 60, off % 60);
     return b;
 }
+#else
+std::string FormatLocal(time_t t) {
+    struct tm lt;
+    if (!localtime_r(&t, &lt)) return "";
+    long off = lt.tm_gmtoff / 60;   // 分钟，东八区为 +480
+    char sign = off >= 0 ? '+' : '-';
+    if (off < 0) off = -off;
+    char b[40];
+    snprintf(b, sizeof(b), "%04d-%02d-%02dT%02d:%02d:%02d%c%02ld:%02ld", lt.tm_year + 1900, lt.tm_mon + 1, lt.tm_mday,
+             lt.tm_hour, lt.tm_min, lt.tm_sec, sign, off / 60, off % 60);
+    return b;
+}
+#endif
 }  // namespace
 
 std::string NowIso() {
+#ifndef _WIN32
+    return FormatLocal(time(nullptr));
+#else
     SYSTEMTIME st;
     GetLocalTime(&st);
     return FormatLocal(st);
+#endif
 }
 
 std::string FileTimeIso(unsigned long long filetime) {
     if (filetime == 0) return "";
+#ifndef _WIN32
+    if (filetime < plat::kUnixEpochAsFileTime) return "";
+    return FormatLocal((time_t)((filetime - plat::kUnixEpochAsFileTime) / 10000000ULL));
+#else
     FILETIME ft, lft;
     ft.dwLowDateTime = (DWORD)(filetime & 0xFFFFFFFFULL);
     ft.dwHighDateTime = (DWORD)(filetime >> 32);
     SYSTEMTIME st;
     if (!FileTimeToLocalFileTime(&ft, &lft) || !FileTimeToSystemTime(&lft, &st)) return "";
     return FormatLocal(st);
+#endif
 }
 
 std::string Hex8(unsigned long v) {
@@ -311,12 +343,12 @@ void StatusInit(const std::string &search_res_ansi, int option, int heartbeat_se
     g.inited = true;
     std::string dir = search_res_ansi;
     while (!dir.empty() && (dir.back() == '\\' || dir.back() == '/')) dir.pop_back();
-    g.status_path = dir.empty() ? "" : dir + "\\dbr_status.json";
+    g.status_path = dir.empty() ? "" : dir + PSEP "dbr_status.json";
     g.stage = AnsiToUtf8(BaseName(dir));
     g.option = option;
     g.heartbeat_sec = heartbeat_sec > 0 ? heartbeat_sec : 300;
     g.start_time = NowIso();
-    g.start_tick = GetTickCount64();
+    g.start_tick = plat::TickMs();
 }
 
 void StatusParamRaw(const std::string &key, const std::string &value_json) {
@@ -376,7 +408,7 @@ void StatusSuggest(const std::string &code) { g.suggestion_code = code; }
 
 long long ElapsedSec() {
     if (g.start_tick == 0) return 0;
-    return (long long)((GetTickCount64() - g.start_tick) / 1000ULL);
+    return (long long)((plat::TickMs() - g.start_tick) / 1000ULL);
 }
 
 int StatusFinish(Result r, const std::string &detail_utf8, const std::string &suggestion_code, const ProcInfo *proc) {

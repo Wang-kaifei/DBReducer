@@ -1,9 +1,20 @@
 #include "Param.hpp"
+
 #include <typeinfo>
 #include <iostream>
 #include <algorithm>
 #include "../utils/IOUtil.h"
 #include "../utils/StringUtil.h"
+
+// 2026-11（Linux 移植）：路径值去掉首尾的分隔符。Linux 的绝对路径以 / 开头，只能去尾部；Windows 上照旧两头都去
+static std::string &StripSep(std::string *s) {
+#ifdef _WIN32
+    return Strip(s, "\\/");
+#else
+    while (s->size() > 1 && s->back() == '/') s->pop_back();
+    return *s;
+#endif
+}
 #define VNAME(value) (#value)
 
 /**
@@ -36,7 +47,7 @@ void Params::LoadParam(const std::string &cfgpath) {
 		else if (key == "ProteinDatabase")
 			this->ProteinDatabase = value;
         else if (key == "SearchRes") {
-            this->SearchRes = Strip(&value, "\\/");
+            this->SearchRes = StripSep(&value);
         }
         else if (key == "threshold")
 			this->threshold = std::stod(value);
@@ -191,7 +202,7 @@ void PFindParams::Write(const std::string &out_path) {
         write_line(this->msmsfolder, "msmsfolder=");
     int msmscnt = 1;
     for (auto path = this->msmspaths.begin(), end_ = this->msmspaths.end(); path != end_; path++) {
-        write_line_string(Strip(&(*path), "/\\"), "msmspath" + std::to_string(msmscnt) + "=");
+        write_line_string(StripSep(&(*path)), "msmspath" + std::to_string(msmscnt) + "=");
         msmscnt++;
     }
     write_line_string(this->msmstype, "msmstype="); 

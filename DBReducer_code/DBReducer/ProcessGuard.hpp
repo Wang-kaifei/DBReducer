@@ -1,13 +1,19 @@
 /**
  * @file ProcessGuard.hpp
- * @brief 启动一个外部程序并托管它的整棵进程树（Windows Job Object）。
+ * @brief 启动一个外部程序并托管它的整棵进程树（Windows：Job Object；Linux：ptrace，2026-11）。
  *
- *  - 子进程及其派生的所有进程（包括经 cmd / start /b 拉起的）都被收进同一个 Job；
- *  - Job 设了 KILL_ON_JOB_CLOSE：托管方自己退出（哪怕被强杀）时，整棵树随之终止，不留孤儿；
+ *  - 子进程及其派生的所有进程（包括经 cmd / start /b、sh -c ... & 拉起的）都被收进来；
+ *  - 托管方自己退出（哪怕被强杀）时，整棵树随之终止，不留孤儿（Windows：KILL_ON_JOB_CLOSE；Linux：PTRACE_O_EXITKILL）；
  *  - 名单内的子进程以非 0 退出 → 立即终止整棵树并报告是谁、退出码多少；
  *  - 每 tick 回调一次（附带整棵树的累计 CPU 时间），调用方在里面做心跳 / 停滞判断，返回 true 即终止整棵树。
  *
  * 本模块不依赖 DBReducer 的其他代码，pAnno 托管 pFind 两轮搜库时可直接复制使用。
+ *
+ * Linux 版的差别：
+ *  - 只有设了 fatal_children 或 on_other_child_failed 才跟踪子孙进程；否则只跟踪主进程本身。
+ *    一个进程只能被一个进程跟踪：pAnno 托管 DBReducer 时若也跟踪子孙，DBReducer 就没法再托管它下面的 pFind；
+ *  - 退出码：正常退出取 exit 的值；被信号杀死记为 128 + 信号（与 shell 相同），abort 即 134；
+ *  - 系统禁止 ptrace 时 job_ok = false，只监视主进程（与 Windows 进不了 Job 时相同）。
  */
 #ifndef PROCESS_GUARD_HPP
 #define PROCESS_GUARD_HPP
@@ -57,6 +63,9 @@ struct Options {
 };
 
 Result Run(const Options &opt);
+
+/// 是不是 abort 退出（多为内存不足，也可能是程序内部错误）：Windows（MinGW）abort 的退出码是 3，Linux 是 128 + SIGABRT
+bool IsAbortExit(unsigned long code);
 
 /// 由 Job 的 CPU 时间判断进程树是否在"干活"（供停滞判断用）。
 /// 每 window_ms 结算一次：窗口内 CPU 增量 ≥ 单核的 busy_frac 即视为活跃。
