@@ -1,33 +1,49 @@
-cmake_minimum_required(VERSION 3.15)
-project(DBReducer)
+# DBReducer 两个平台共用的编译配置（v0.4.0 起，与 pAnno 仓库的 CMakeLists.txt 同一套做法）
+#
+# 编译（推荐用 DBReducer_code/build.ps1 / build.sh）：
+#   cmake -S <本目录> -B <编译目录>
+#   cmake --build <编译目录> -j
+# 产物：<编译目录>/bin/DBReducer（Windows 带 .exe）。utils 编成静态库直接链进程序，不再单独出 libUtils.dll。
+# Windows 全静态（不依赖任何 MinGW 运行库 dll）；Linux 只静态链接 libstdc++/libgcc。
 
-set(CMAKE_CXX_STANDARD 20)
-#SET(CMAKE_BUILD_TYPE "Debug")
-SET(CMAKE_BUILD_TYPE "Release")
-SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
-SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
-FIND_PACKAGE( OpenMP REQUIRED)
-if(OPENMP_FOUND)
-message("OPENMP FOUND")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+cmake_minimum_required(VERSION 3.16)
+project(DBReducer LANGUAGES C CXX)
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "" FORCE)
 endif()
 
-# 2026-10：原先链接写死的 D:/DBReducer/DBReducer_code/utils/build/lib/libUtils.dll（他人目录），
-# 改为把本仓库的 utils 作为子工程一起编译、按目标名链接。
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../utils ${CMAKE_CURRENT_BINARY_DIR}/utils)
-
-# 版本信息写进 exe（状态文件的 tool_build 字段）
-execute_process(COMMAND git describe --always --dirty
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                OUTPUT_VARIABLE DBR_GIT OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
-string(TIMESTAMP DBR_DATE "%Y-%m-%d")
-if(NOT DBR_GIT)
-  set(DBR_GIT "nogit")
+if(WIN32)
+  set(DBR_FULL_STATIC_DEFAULT ON)
+else()
+  set(DBR_FULL_STATIC_DEFAULT OFF)
+endif()
+option(DBR_FULL_STATIC "完全静态链接" ${DBR_FULL_STATIC_DEFAULT})
+if(DBR_FULL_STATIC)
+  set(DBR_LINK_STATIC -static)
+else()
+  set(DBR_LINK_STATIC -static-libstdc++ -static-libgcc)
 endif()
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(UTILS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../utils)
+
+# utils（../utils/CMakeLists.txt 是早先单独编 libUtils.dll 用的，已不再使用）
+add_library(dbr_utils STATIC ${UTILS_DIR}/IOUtil.cpp ${UTILS_DIR}/StringUtil.cpp)
+target_compile_options(dbr_utils PRIVATE -O3 -Wall -std=gnu++14)
+
+# 版本信息（每次编译刷新，写进状态文件的 tool_build 字段）
+add_custom_target(dbr_build_info ALL
+  COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_CURRENT_SOURCE_DIR} -DOUT=${CMAKE_BINARY_DIR}/gen/dbr_build_info.h
+          -P ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/build_info.cmake
+  BYPRODUCTS ${CMAKE_BINARY_DIR}/gen/dbr_build_info.h
+  COMMENT "版本信息")
+
+# OpenMP 直接用 -fopenmp：find_package(OpenMP) 在 MinGW 上会链接 libgomp.dll.a，-static 也拦不住
 add_executable(DBReducer main.cpp Rebuild.cpp Param.cpp Rebuild-spec.cpp Status.cpp ProcessGuard.cpp Precheck.cpp)
-target_compile_definitions(DBReducer PRIVATE DBR_BUILD="${DBR_DATE} ${DBR_GIT}")
-TARGET_LINK_LIBRARIES(DBReducer Utils)
-target_compile_options(DBReducer PUBLIC -fopenmp)
+target_compile_options(DBReducer PRIVATE -fopenmp -O3 -Wall -std=gnu++20)
+target_include_directories(DBReducer PRIVATE ${CMAKE_BINARY_DIR}/gen)
+add_dependencies(DBReducer dbr_build_info)
+target_link_options(DBReducer PRIVATE -fopenmp)
+target_link_libraries(DBReducer PRIVATE dbr_utils ${DBR_LINK_STATIC})

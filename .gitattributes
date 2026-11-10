@@ -1,0 +1,2 @@
+# Linux 脚本必须是 LF，否则 bash 报错（core.autocrlf=true 时）
+*.sh text eol=lf
