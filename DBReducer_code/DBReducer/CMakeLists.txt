@@ -4,7 +4,7 @@
 #   cmake -S <本目录> -B <编译目录>
 #   cmake --build <编译目录> -j
 # 产物：<编译目录>/bin/DBReducer（Windows 带 .exe）。utils 编成静态库直接链进程序，不再单独出 libUtils.dll。
-# Windows 全静态（不依赖任何 MinGW 运行库 dll）；Linux 只静态链接 libstdc++/libgcc。
+# 两个平台都全静态（用户 11-10 定）：不依赖 MinGW 运行库 dll / 系统的 glibc、libstdc++、libgomp。
 
 cmake_minimum_required(VERSION 3.16)
 project(DBReducer LANGUAGES C CXX)
@@ -13,12 +13,7 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "" FORCE)
 endif()
 
-if(WIN32)
-  set(DBR_FULL_STATIC_DEFAULT ON)
-else()
-  set(DBR_FULL_STATIC_DEFAULT OFF)
-endif()
-option(DBR_FULL_STATIC "完全静态链接" ${DBR_FULL_STATIC_DEFAULT})
+option(DBR_FULL_STATIC "完全静态链接（关掉时只静态链接 libstdc++/libgcc，开发调试用）" ON)
 if(DBR_FULL_STATIC)
   set(DBR_LINK_STATIC -static)
 else()

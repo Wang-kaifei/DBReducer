@@ -3,7 +3,7 @@
 #
 # 用法:  ./build.sh <编译目录>
 #        可用环境变量 CXX/CC 指定编译器（默认 g++-12/gcc-12，没有就用 g++/gcc）
-# 产出:  <编译目录>/bin/DBReducer
+# 产出:  <编译目录>/bin/DBReducer（全静态，CentOS 7 起都能跑）
 set -e
 OUT=${1:?用法: build.sh <编译目录>}
 SRC=$(cd "$(dirname "$0")" && pwd)
